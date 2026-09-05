@@ -1,0 +1,8 @@
+__pycache__/
+*.py[cod]
+data/
+outputs/
+outputs_*/
+vendor/
+vendor_wheels/
+

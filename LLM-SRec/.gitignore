@@ -1,0 +1,7 @@
+*.pt
+*.txt
+!requirements-ver4.txt
+*.pyc
+*.json.gz
+*.pth
+!SeqRec/data_*/ver4_manifest.json

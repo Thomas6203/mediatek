@@ -1,0 +1,96 @@
+{
+  "valid": {
+    "recall@5": 0.06349206349206349,
+    "recall@10": 0.06349206349206349,
+    "ndcg@5": 0.047901312510172524,
+    "ndcg@10": 0.047901312510172524,
+    "hit@5": 0.06349206349206349,
+    "hit@10": 0.06349206349206349,
+    "preference_change_probability": 0.5370551215277778,
+    "preference_current_entropy": 4.0694158644903276,
+    "preference_next_entropy": 4.034635029141865,
+    "preference_ranking_weight": 0.199951171875,
+    "users_per_second": 6009.7443431713755,
+    "scores_per_second": 1826962.280324098,
+    "evaluated_users": 63,
+    "total_users": 63
+  },
+  "test": {
+    "recall@5": 0.06349206349206349,
+    "recall@10": 0.07936507936507936,
+    "ndcg@5": 0.05763380489652119,
+    "ndcg@10": 0.06264118164304704,
+    "hit@5": 0.06349206349206349,
+    "hit@10": 0.07936507936507936,
+    "preference_change_probability": 0.5284675719246031,
+    "preference_current_entropy": 4.067461286272321,
+    "preference_next_entropy": 4.035780407133556,
+    "preference_ranking_weight": 0.199951171875,
+    "users_per_second": 4759.494821612262,
+    "scores_per_second": 1446886.4257701277,
+    "evaluated_users": 63,
+    "total_users": 63
+  },
+  "training": {
+    "monitor_metric": "ndcg@10",
+    "best_score": 0.047901312510172524,
+    "best_step": 40,
+    "best_stage": "final",
+    "global_steps": 40,
+    "stopped_early": false,
+    "target_recall_at_10": 0.15,
+    "target_achieved": false,
+    "experiment_note": "amazons_full subset=Toys; common architecture; periodic validation/test",
+    "training_objective": {
+      "type": "multi_step_listwise_ranking",
+      "reinforce_removed": true,
+      "long_short_orthogonality_removed": true,
+      "prefix_sampling": "resampled_each_epoch",
+      "future_horizon": 3,
+      "future_decay": 0.5,
+      "negative_mining": "model_hard_from_training_safe_random_pool",
+      "hard_negative_pool_multiplier": 4,
+      "preference_contrastive_coef": 0.05
+    },
+    "catalog_prior": {
+      "popularity_alpha": 0.3,
+      "transition_beta": 0.5,
+      "source": "train_histories_only"
+    },
+    "preference_agent": {
+      "preference_count": 64,
+      "hidden_dim": 128,
+      "assignment_temperature": 0.2,
+      "tiny_mamba_dim": 32,
+      "tiny_mamba_residual_weight": 0.01000889204442501,
+      "learned_ranking_weight": 0.199856236577034,
+      "objectives": {
+        "next_preference": 0.2,
+        "transition_detection": 0.1,
+        "prototype_balance": 0.01,
+        "prototype_separation": 0.01
+      }
+    },
+    "validation_history": [
+      {
+        "global_step": 40,
+        "stage": "final",
+        "epoch": 0,
+        "recall@5": 0.06349206349206349,
+        "recall@10": 0.06349206349206349,
+        "ndcg@5": 0.047901312510172524,
+        "ndcg@10": 0.047901312510172524,
+        "hit@5": 0.06349206349206349,
+        "hit@10": 0.06349206349206349,
+        "preference_change_probability": 0.5370551215277778,
+        "preference_current_entropy": 4.0694158644903276,
+        "preference_next_entropy": 4.034635029141865,
+        "preference_ranking_weight": 0.199951171875,
+        "users_per_second": 5913.32868661213,
+        "scores_per_second": 1797651.9207300872,
+        "evaluated_users": 63.0,
+        "total_users": 63.0
+      }
+    ]
+  }
+}

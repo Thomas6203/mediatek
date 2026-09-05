@@ -1,0 +1,30 @@
+{
+  "dataset": "amazon-beauty-pctm",
+  "directory": "s3_beauty",
+  "evaluation": {
+    "catalogue_items": 12092,
+    "catalogue_sha256": "fca43d0a6cb38b42410beefddc4cebca4ae1d37c9b59f8716b1170613dce9857",
+    "eligible_test_users": 22311,
+    "histories_sha256": "1a5068c951c14f31137351654cfad0eec959811da0126c79b01cd1f3374397b6",
+    "protocol": {
+      "filter_seen": true,
+      "full_catalogue": true,
+      "k": 10
+    },
+    "targets_sha256": "f3698ef63f6c45e82f70c57dcd697b48533be51f64dad378f3b2a475f43f066e"
+  },
+  "evaluation_contract_sha256": "89e40affaf19e2388ff196ee339a702d4549ddd74580ba7b9857cbc663949f0e",
+  "file_contract_sha256": "b92c5b7b85142f1b9d6e4ae7bd344a21f7ffa01a956204e71e8fea9e3455fc69",
+  "files": {
+    "holdout.csv": {
+      "rows": 22311,
+      "sha256": "38dbedf2dedc6951be1d8a3d4f6b2d93aa7129ce5d4f0fcf0d17bee0e315f43a"
+    },
+    "train.csv": {
+      "rows": 176139,
+      "sha256": "956357e585c8c4ddf50ff4dd4331d7e046c1b42b8eaa13cc21c8b9dccee89795"
+    }
+  },
+  "schema_version": 1,
+  "verification": "official-pinned"
+}

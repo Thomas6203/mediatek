@@ -1,0 +1,149 @@
+2026-09-01 22:08:58,528 | INFO | run_id=20260901_220858 dataset=synthetic device=cuda:0
+2026-09-01 22:08:58,528 | INFO | EXPERIMENT_NOTE 
+2026-09-01 22:08:58,528 | INFO | EXPERIMENT_CONFIG {"batch_size": 8, "cache_dir": "/workspace/S114065701/mediatek/cache", "candidates": 4, "checkpoint_every_minutes": 0.0, "coordinator_epochs": 1, "coordinator_lr": 0.0002, "data_path": null, "dataset": "synthetic", "device": "cuda:0", "dim": 16, "early_stopping_patience": 12, "enable_lora": 1, "eval_batch_size": 8, "experiment_note": "", "full_catalog_supervised": false, "future_decay": 0.5, "future_horizon": 1, "generate_reasons": false, "graph_device": "cuda:0", "hard_negative_pool_multiplier": 4, "item_prompt_prefix": "Preference-aware product representation: ", "item_vector_artifact": null, "joint_epochs": 1, "joint_lr": 5e-05, "lora_alpha": 16.0, "lora_dropout": 0.05, "lora_rank": 4, "lr_patience": 3, "mamba_encode_batch_size": 4, "mamba_max_tokens": 48, "max_events": null, "max_history": 5, "max_transitions": 32, "min_rating": 4.0, "min_user_events": 5, "monitor_metric": "ndcg@10", "output_dir": "/workspace/S114065701/mediatek/MediaTek_2026_project-0831/ver4/outputs_mamba_rl", "output_run_dir": "/workspace/S114065701/mediatek/experiments/smoke/synthetic_20260901_220857", "pctm_item_text_mode": "id", "pctm_metadata_path": null, "pctm_verify_split": true, "periodic_test_user_limit": -1, "popularity_alpha": 0.0, "preference_balance_coef": 0.01, "preference_coef": 0.2, "preference_contrastive_coef": 0.05, "preference_count": 4, "preference_hidden": 16, "preference_score_weight": 0.2, "preference_separation_coef": 0.01, "preference_temperature": 0.2, "preference_transition_coef": 0.1, "reason_count": 20, "reason_max_new_tokens": 40, "refit_outer_train": false, "refresh_data_cache": false, "resume_checkpoint": null, "run_checkpoint_path": null, "run_hours": 0.0, "sasrec_filtering": false, "save_model_weights": true, "score_file": null, "seed": 25252, "short_window": 3, "skip_mamba": true, "specialist_epochs": 1, "specialist_lr": 0.0002, "target_recall_at_10": 0.15, "transition_beta": 0.0, "use_graph_embeddings": false, "validate_every_steps": 1, "validation_user_limit": 0}
+2026-09-01 22:08:58,530 | INFO | INTERACTION_CACHE miss_saved path=/workspace/S114065701/mediatek/cache/mamba_multi_agent_data/synthetic_fd5f2c52bba5.pkl
+2026-09-01 22:08:58,530 | INFO | users=24 items=5 train_interactions=72
+2026-09-01 22:08:58,530 | INFO | CATALOG_PRIORS popularity_alpha=0.000000 transition_beta=0.000000 source=train_histories_only enabled=False
+2026-09-01 22:08:58,530 | WARNING | --skip-mamba uses random item features; it is only a smoke-test mode
+2026-09-01 22:08:58,530 | INFO | ITEM_VECTOR_ARTIFACT path=/workspace/S114065701/mediatek/cache/mamba_multi_agent/synthetic_5_d2b663c8c3ac_prompt_tok48.pt fingerprint=d2b663c8c3ac
+2026-09-01 22:08:58,530 | INFO | GRAPH_EMBEDDINGS enabled=False source=train_histories_only main_device=cuda:0 graph_device=cuda:0
+2026-09-01 22:08:58,710 | INFO | ADAPTATION_MODE mode=multi_lora enable_lora=1
+2026-09-01 22:08:58,710 | INFO | ADAPTER_ROUTES {'long': ('candidate_lora', 'delta_lora', 'gate_lora', 'output_lora'), 'short': ('candidate_lora', 'delta_lora', 'gate_lora', 'output_lora'), 'preference': ('transition_lora', 'state_lora'), 'coordinator': ('state_lora', 'mix_lora', 'score_lora')}
+2026-09-01 22:08:58,711 | INFO | agent_parameters={'long': 529, 'short': 529, 'preference': 1466, 'coordinator': 461, 'shared_projection': 256, 'graph': 0}
+2026-09-01 22:08:58,711 | INFO | training_transitions=32
+2026-09-01 22:08:58,711 | INFO | schedule specialist_epochs=1 coordinator_epochs=1 joint_ranking_epochs=1 validate_every_steps=1 validation_users=0 periodic_test_users=-1 monitor=ndcg@10 early_stopping_patience=12
+2026-09-01 22:08:59,607 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=specialists | epoch=1 | step=1 | users=24/24
+NDCG  | @5 0.846221 | @10 0.846221
+Recall| @5 1.000000 | @10 1.000000
+Hit   | @5 1.000000 | @10 1.000000
+================================
+2026-09-01 22:08:59,608 | INFO | VALID_STEP step=1 stage=specialists epoch=1 ndcg@10=0.846221 recall@10=1.000000 improved=True
+2026-09-01 22:08:59,610 | INFO | BEST_CHECKPOINT step=1 stage=specialists ndcg@10=0.846221 path=/workspace/S114065701/mediatek/experiments/smoke/synthetic_20260901_220857/best_validation.pt
+2026-09-01 22:08:59,631 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=specialists | epoch=1 | step=2 | users=24/24
+NDCG  | @5 0.846221 | @10 0.846221
+Recall| @5 1.000000 | @10 1.000000
+Hit   | @5 1.000000 | @10 1.000000
+================================
+2026-09-01 22:08:59,631 | INFO | VALID_STEP step=2 stage=specialists epoch=1 ndcg@10=0.846221 recall@10=1.000000 improved=False
+2026-09-01 22:08:59,651 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=specialists | epoch=1 | step=3 | users=24/24
+NDCG  | @5 0.846221 | @10 0.846221
+Recall| @5 1.000000 | @10 1.000000
+Hit   | @5 1.000000 | @10 1.000000
+================================
+2026-09-01 22:08:59,651 | INFO | VALID_STEP step=3 stage=specialists epoch=1 ndcg@10=0.846221 recall@10=1.000000 improved=False
+2026-09-01 22:08:59,672 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=specialists | epoch=1 | step=4 | users=24/24
+NDCG  | @5 0.846221 | @10 0.846221
+Recall| @5 1.000000 | @10 1.000000
+Hit   | @5 1.000000 | @10 1.000000
+================================
+2026-09-01 22:08:59,672 | INFO | VALID_STEP step=4 stage=specialists epoch=1 ndcg@10=0.846221 recall@10=1.000000 improved=False
+2026-09-01 22:08:59,672 | INFO | stage=specialists epoch=1 loss=4.593931 steps=4 transitions/s=80.28
+2026-09-01 22:08:59,688 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=coordinator | epoch=1 | step=5 | users=24/24
+NDCG  | @5 0.846221 | @10 0.846221
+Recall| @5 1.000000 | @10 1.000000
+Hit   | @5 1.000000 | @10 1.000000
+================================
+2026-09-01 22:08:59,688 | INFO | VALID_STEP step=5 stage=coordinator epoch=1 ndcg@10=0.846221 recall@10=1.000000 improved=False
+2026-09-01 22:08:59,688 | INFO | LEARNING_RATE step=5 stage=coordinator lr=0.0002
+2026-09-01 22:08:59,703 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=coordinator | epoch=1 | step=6 | users=24/24
+NDCG  | @5 0.846221 | @10 0.846221
+Recall| @5 1.000000 | @10 1.000000
+Hit   | @5 1.000000 | @10 1.000000
+================================
+2026-09-01 22:08:59,703 | INFO | VALID_STEP step=6 stage=coordinator epoch=1 ndcg@10=0.846221 recall@10=1.000000 improved=False
+2026-09-01 22:08:59,703 | INFO | LEARNING_RATE step=6 stage=coordinator lr=0.0002
+2026-09-01 22:08:59,718 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=coordinator | epoch=1 | step=7 | users=24/24
+NDCG  | @5 0.846221 | @10 0.846221
+Recall| @5 1.000000 | @10 1.000000
+Hit   | @5 1.000000 | @10 1.000000
+================================
+2026-09-01 22:08:59,718 | INFO | VALID_STEP step=7 stage=coordinator epoch=1 ndcg@10=0.846221 recall@10=1.000000 improved=False
+2026-09-01 22:08:59,718 | INFO | LEARNING_RATE step=7 stage=coordinator lr=0.0002
+2026-09-01 22:08:59,733 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=coordinator | epoch=1 | step=8 | users=24/24
+NDCG  | @5 0.846221 | @10 0.846221
+Recall| @5 1.000000 | @10 1.000000
+Hit   | @5 1.000000 | @10 1.000000
+================================
+2026-09-01 22:08:59,733 | INFO | VALID_STEP step=8 stage=coordinator epoch=1 ndcg@10=0.846221 recall@10=1.000000 improved=False
+2026-09-01 22:08:59,733 | INFO | LEARNING_RATE step=8 stage=coordinator lr=0.0002
+2026-09-01 22:08:59,733 | INFO | stage=coordinator epoch=1 loss=1.637340 steps=4 transitions/s=1415.49
+2026-09-01 22:08:59,756 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=joint | epoch=1 | step=9 | users=24/24
+NDCG  | @5 0.846221 | @10 0.846221
+Recall| @5 1.000000 | @10 1.000000
+Hit   | @5 1.000000 | @10 1.000000
+================================
+2026-09-01 22:08:59,756 | INFO | VALID_STEP step=9 stage=joint epoch=1 ndcg@10=0.846221 recall@10=1.000000 improved=False
+2026-09-01 22:08:59,756 | INFO | LEARNING_RATE step=9 stage=joint lr=5e-05
+2026-09-01 22:08:59,776 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=joint | epoch=1 | step=10 | users=24/24
+NDCG  | @5 0.846221 | @10 0.846221
+Recall| @5 1.000000 | @10 1.000000
+Hit   | @5 1.000000 | @10 1.000000
+================================
+2026-09-01 22:08:59,776 | INFO | VALID_STEP step=10 stage=joint epoch=1 ndcg@10=0.846221 recall@10=1.000000 improved=False
+2026-09-01 22:08:59,776 | INFO | LEARNING_RATE step=10 stage=joint lr=5e-05
+2026-09-01 22:08:59,796 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=joint | epoch=1 | step=11 | users=24/24
+NDCG  | @5 0.846221 | @10 0.846221
+Recall| @5 1.000000 | @10 1.000000
+Hit   | @5 1.000000 | @10 1.000000
+================================
+2026-09-01 22:08:59,796 | INFO | VALID_STEP step=11 stage=joint epoch=1 ndcg@10=0.846221 recall@10=1.000000 improved=False
+2026-09-01 22:08:59,796 | INFO | LEARNING_RATE step=11 stage=joint lr=5e-05
+2026-09-01 22:08:59,816 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=joint | epoch=1 | step=12 | users=24/24
+NDCG  | @5 0.846221 | @10 0.846221
+Recall| @5 1.000000 | @10 1.000000
+Hit   | @5 1.000000 | @10 1.000000
+================================
+2026-09-01 22:08:59,816 | INFO | VALID_STEP step=12 stage=joint epoch=1 ndcg@10=0.846221 recall@10=1.000000 improved=False
+2026-09-01 22:08:59,816 | INFO | LEARNING_RATE step=12 stage=joint lr=5e-05
+2026-09-01 22:08:59,816 | INFO | stage=joint epoch=1 loss=1.993363 steps=4 transitions/s=704.64
+2026-09-01 22:08:59,826 | INFO | 
+========== FINAL CURRENT VALIDATION ==========
+stage=final | epoch=0 | step=12 | users=24/24
+NDCG  | @5 0.846221 | @10 0.846221
+Recall| @5 1.000000 | @10 1.000000
+Hit   | @5 1.000000 | @10 1.000000
+================================
+2026-09-01 22:08:59,826 | INFO | VALID_STEP step=12 stage=final epoch=0 ndcg@10=0.846221 recall@10=1.000000 improved=False
+2026-09-01 22:08:59,826 | INFO | RESTORE_BEST step=1 stage=specialists ndcg@10=0.846221
+2026-09-01 22:08:59,848 | INFO | 
+========== BEST CHECKPOINT VALIDATION ==========
+stage=specialists | epoch=0 | step=1 | users=24/24
+NDCG  | @5 0.846221 | @10 0.846221
+Recall| @5 1.000000 | @10 1.000000
+Hit   | @5 1.000000 | @10 1.000000
+================================
+2026-09-01 22:08:59,848 | INFO | 
+========== FINAL FULL TEST ==========
+stage=specialists | epoch=0 | step=1 | users=24/24
+NDCG  | @5 1.000000 | @10 1.000000
+Recall| @5 1.000000 | @10 1.000000
+Hit   | @5 1.000000 | @10 1.000000
+================================
+2026-09-01 22:08:59,848 | INFO | VALID_BEST {"evaluated_users": 24, "hit@10": 1.0, "hit@5": 1.0, "ndcg@10": 0.8462207118670145, "ndcg@5": 0.8462207118670145, "preference_change_probability": 0.23191324869791666, "preference_current_entropy": 0.9139017264048258, "preference_next_entropy": 1.2703442573547363, "preference_ranking_weight": 0.199951171875, "recall@10": 1.0, "recall@5": 1.0, "scores_per_second": 13656.534315099187, "total_users": 24, "users_per_second": 2731.3068630198372}
+2026-09-01 22:08:59,848 | INFO | TEST_FINAL {"evaluated_users": 24, "hit@10": 1.0, "hit@5": 1.0, "ndcg@10": 1.0, "ndcg@5": 1.0, "preference_change_probability": 0.23331197102864584, "preference_current_entropy": 0.8950854341189066, "preference_next_entropy": 1.2731339534123738, "preference_ranking_weight": 0.199951171875, "recall@10": 1.0, "recall@5": 1.0, "scores_per_second": 9892.069208621528, "total_users": 24, "users_per_second": 1978.4138417243055}
+2026-09-01 22:08:59,848 | INFO | TARGET_RESULT metric=recall@10 target=>0.150000 actual=1.000000 achieved=True
+2026-09-01 22:09:00,368 | INFO | outputs=/workspace/S114065701/mediatek/experiments/smoke/synthetic_20260901_220857

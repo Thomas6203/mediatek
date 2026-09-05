@@ -1,0 +1,36 @@
+{
+  "dataset_key": "all_beauty",
+  "amazon_2023_config": "raw_review_All_Beauty",
+  "metadata_config": "raw_meta_All_Beauty",
+  "filter": "one-pass raw user>=5 and raw item>=5",
+  "split": "stable chronological leave-two-out; post-filter length<3 is training-only",
+  "statistics": {
+    "num_users": 1603,
+    "evaluation_users": 1457,
+    "num_items": 4090,
+    "train_interactions": 8445
+  },
+  "split_sha256": "0a0349ae56194bbfa44cee2d21feee3a0983ef83ea8bbc06147033295ac14ad4",
+  "source_split_sha256": "0a0349ae56194bbfa44cee2d21feee3a0983ef83ea8bbc06147033295ac14ad4",
+  "protocol": {
+    "seed": 25252,
+    "epochs": 18,
+    "batch_size": 128,
+    "evaluation_batch_size": 64,
+    "max_history": 50,
+    "early_stopping_patience": 6,
+    "selection_metric": "validation ndcg@10",
+    "evaluation": "all eligible users, full catalog, seen-item masking",
+    "max_transitions": 500000
+  },
+  "source_commit": "b81019ca655fb759cee895924b8b6c7cc0f0cce9",
+  "split_file_sha256": {
+    "train": "52d996ab57ede02ca5d0e357d009d54d84cc79cde5b04236ea5cb6b9a2cc2c8a",
+    "valid": "3c496357adca43a63298fe10b8c8bcf1a009c0bbab1845899bfd25fd85882211",
+    "test": "18543f2990de8c25d224215733f8ab7bf003e07d5c881a2d4a659940b6b69ae9"
+  },
+  "text_metadata_sha256": "4f797f2af4b3f15875d3ab3e7ecb17c22f313487a4955b7933df45c62de832ca",
+  "metadata_items_matched": 4090,
+  "timestamp_interactions_verified": 11359,
+  "placeholders_only": false
+}

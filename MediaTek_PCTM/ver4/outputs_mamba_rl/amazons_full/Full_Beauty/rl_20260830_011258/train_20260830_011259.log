@@ -1,0 +1,355 @@
+2026-08-30 01:12:59,328 | INFO | run_id=20260830_011259 dataset=amazon-all-beauty device=cuda:0
+2026-08-30 01:12:59,328 | INFO | EXPERIMENT_NOTE amazons_lora subset=Full_Beauty; common architecture; periodic validation/test
+2026-08-30 01:12:59,328 | INFO | EXPERIMENT_CONFIG {"batch_size": 128, "cache_dir": "/workspace/P78123011/cache", "candidates": 64, "coordinator_epochs": 4, "coordinator_lr": 0.0001, "data_path": null, "dataset": "amazon-all-beauty", "device": "cuda:0", "dim": 128, "early_stopping_patience": 6, "enable_lora": 1, "eval_batch_size": 64, "experiment_note": "amazons_lora subset=Full_Beauty; common architecture; periodic validation/test", "full_catalog_supervised": false, "future_decay": 0.5, "future_horizon": 3, "generate_reasons": false, "graph_device": "cuda:1", "hard_negative_pool_multiplier": 4, "item_prompt_prefix": "Preference-aware product representation: ", "item_vector_artifact": null, "joint_epochs": 10, "joint_lr": 5e-05, "lora_alpha": 32.0, "lora_dropout": 0.05, "lora_rank": 16, "lr_patience": 2, "mamba_encode_batch_size": 32, "mamba_max_tokens": 32, "max_events": null, "max_history": 100, "max_transitions": 500000, "min_rating": 4.0, "min_user_events": 5, "monitor_metric": "ndcg@10", "output_dir": "/workspace/P78123011/MediaTek_2026_project/ver4/outputs_mamba_rl/amazons_lora", "output_run_dir": "/workspace/P78123011/MediaTek_2026_project/ver4/outputs_mamba_rl/amazons_lora/Full_Beauty/rl_20260830_011258", "periodic_test_user_limit": 0, "popularity_alpha": -0.25, "preference_balance_coef": 0.01, "preference_coef": 0.2, "preference_contrastive_coef": 0.05, "preference_count": 64, "preference_hidden": 128, "preference_score_weight": 0.2, "preference_separation_coef": 0.01, "preference_temperature": 0.2, "preference_transition_coef": 0.1, "reason_count": 20, "reason_max_new_tokens": 40, "refresh_data_cache": false, "resume_checkpoint": null, "save_model_weights": false, "score_file": "/workspace/P78123011/MediaTek_2026_project/ver4/outputs_mamba_rl/amazons_lora/Full_Beauty/rl_20260830_011258/Full_Beauty_scores.json", "seed": 25252, "short_window": 10, "skip_mamba": false, "specialist_epochs": 4, "specialist_lr": 0.0001, "target_recall_at_10": 0.15, "transition_beta": 4.0, "use_graph_embeddings": true, "validate_every_steps": 250, "validation_user_limit": 0}
+2026-08-30 01:12:59,331 | INFO | INTERACTION_CACHE hit path=/workspace/P78123011/cache/mamba_multi_agent_data/amazon-all-beauty_15905f803144.pkl
+2026-08-30 01:12:59,331 | INFO | users=1620 items=6982 train_interactions=11744
+2026-08-30 01:12:59,490 | INFO | CATALOG_PRIORS popularity_alpha=-0.250000 transition_beta=4.000000 source=train_histories_only enabled=True
+2026-08-30 01:12:59,524 | INFO | ITEM_VECTOR_ARTIFACT path=/workspace/P78123011/cache/mamba_multi_agent/amazon-all-beauty_6982_75e930bd8958_prompt_tok32.pt fingerprint=75e930bd8958
+2026-08-30 01:12:59,534 | INFO | GRAPH_EMBEDDINGS enabled=True source=train_histories_only main_device=cuda:0 graph_device=cuda:1
+2026-08-30 01:12:59,658 | INFO | ADAPTATION_MODE mode=multi_lora enable_lora=1
+2026-08-30 01:12:59,658 | INFO | ADAPTER_ROUTES {'long': ('candidate_lora', 'delta_lora', 'gate_lora', 'output_lora'), 'short': ('candidate_lora', 'delta_lora', 'gate_lora', 'output_lora'), 'preference': ('transition_lora', 'state_lora'), 'coordinator': ('state_lora', 'mix_lora', 'score_lora')}
+2026-08-30 01:12:59,658 | INFO | agent_parameters={'long': 16513, 'short': 16513, 'preference': 99330, 'coordinator': 14373, 'shared_projection': 327680, 'graph': 1101056}
+2026-08-30 01:12:59,690 | INFO | training_transitions=10124
+2026-08-30 01:12:59,690 | INFO | schedule specialist_epochs=4 coordinator_epochs=4 joint_ranking_epochs=10 validate_every_steps=250 validation_users=0 periodic_test_users=0 monitor=ndcg@10 early_stopping_patience=6
+2026-08-30 01:13:07,898 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=specialists | epoch=1 | step=80 | users=1620/1620
+NDCG  | @5 0.077614 | @10 0.078411
+Recall| @5 0.081481 | @10 0.083951
+Hit   | @5 0.081481 | @10 0.083951
+================================
+2026-08-30 01:13:08,322 | INFO | 
+========== PERIODIC TEST ==========
+stage=specialists | epoch=1 | step=80 | users=1620/1620
+NDCG  | @5 0.098059 | @10 0.099311
+Recall| @5 0.105556 | @10 0.109259
+Hit   | @5 0.105556 | @10 0.109259
+================================
+2026-08-30 01:13:08,322 | INFO | VALID_STEP step=80 stage=specialists epoch=1 ndcg@10=0.078411 recall@10=0.083951 improved=True
+2026-08-30 01:13:08,325 | INFO | BEST_MODEL_IN_MEMORY step=80 stage=specialists ndcg@10=0.078411
+2026-08-30 01:13:08,326 | INFO | stage=specialists epoch=1 loss=12.401216 steps=80 transitions/s=1381.43
+2026-08-30 01:13:15,753 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=specialists | epoch=2 | step=160 | users=1620/1620
+NDCG  | @5 0.078445 | @10 0.079627
+Recall| @5 0.083951 | @10 0.087654
+Hit   | @5 0.083951 | @10 0.087654
+================================
+2026-08-30 01:13:16,179 | INFO | 
+========== PERIODIC TEST ==========
+stage=specialists | epoch=2 | step=160 | users=1620/1620
+NDCG  | @5 0.100199 | @10 0.102026
+Recall| @5 0.109259 | @10 0.114815
+Hit   | @5 0.109259 | @10 0.114815
+================================
+2026-08-30 01:13:16,179 | INFO | VALID_STEP step=160 stage=specialists epoch=2 ndcg@10=0.079627 recall@10=0.087654 improved=True
+2026-08-30 01:13:16,182 | INFO | BEST_MODEL_IN_MEMORY step=160 stage=specialists ndcg@10=0.079627
+2026-08-30 01:13:16,182 | INFO | stage=specialists epoch=2 loss=12.189873 steps=80 transitions/s=1446.11
+2026-08-30 01:13:23,521 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=specialists | epoch=3 | step=240 | users=1620/1620
+NDCG  | @5 0.078916 | @10 0.080516
+Recall| @5 0.084568 | @10 0.089506
+Hit   | @5 0.084568 | @10 0.089506
+================================
+2026-08-30 01:13:23,946 | INFO | 
+========== PERIODIC TEST ==========
+stage=specialists | epoch=3 | step=240 | users=1620/1620
+NDCG  | @5 0.100611 | @10 0.103079
+Recall| @5 0.109259 | @10 0.116667
+Hit   | @5 0.109259 | @10 0.116667
+================================
+2026-08-30 01:13:23,946 | INFO | VALID_STEP step=240 stage=specialists epoch=3 ndcg@10=0.080516 recall@10=0.089506 improved=True
+2026-08-30 01:13:23,948 | INFO | BEST_MODEL_IN_MEMORY step=240 stage=specialists ndcg@10=0.080516
+2026-08-30 01:13:23,948 | INFO | stage=specialists epoch=3 loss=12.026039 steps=80 transitions/s=1465.18
+2026-08-30 01:13:31,343 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=specialists | epoch=4 | step=320 | users=1620/1620
+NDCG  | @5 0.080243 | @10 0.082775
+Recall| @5 0.085802 | @10 0.093827
+Hit   | @5 0.085802 | @10 0.093827
+================================
+2026-08-30 01:13:31,767 | INFO | 
+========== PERIODIC TEST ==========
+stage=specialists | epoch=4 | step=320 | users=1620/1620
+NDCG  | @5 0.100754 | @10 0.103125
+Recall| @5 0.111111 | @10 0.118519
+Hit   | @5 0.111111 | @10 0.118519
+================================
+2026-08-30 01:13:31,767 | INFO | VALID_STEP step=320 stage=specialists epoch=4 ndcg@10=0.082775 recall@10=0.093827 improved=True
+2026-08-30 01:13:31,769 | INFO | BEST_MODEL_IN_MEMORY step=320 stage=specialists ndcg@10=0.082775
+2026-08-30 01:13:31,769 | INFO | stage=specialists epoch=4 loss=11.901372 steps=80 transitions/s=1453.00
+2026-08-30 01:13:35,345 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=coordinator | epoch=1 | step=400 | users=1620/1620
+NDCG  | @5 0.080243 | @10 0.082596
+Recall| @5 0.085802 | @10 0.093210
+Hit   | @5 0.085802 | @10 0.093210
+================================
+2026-08-30 01:13:35,796 | INFO | 
+========== PERIODIC TEST ==========
+stage=coordinator | epoch=1 | step=400 | users=1620/1620
+NDCG  | @5 0.100754 | @10 0.102972
+Recall| @5 0.111111 | @10 0.117901
+Hit   | @5 0.111111 | @10 0.117901
+================================
+2026-08-30 01:13:35,796 | INFO | VALID_STEP step=400 stage=coordinator epoch=1 ndcg@10=0.082596 recall@10=0.093210 improved=False
+2026-08-30 01:13:35,796 | INFO | LEARNING_RATE step=400 stage=coordinator lr=0.0001
+2026-08-30 01:13:35,796 | INFO | stage=coordinator epoch=1 loss=3.558170 steps=80 transitions/s=3247.99
+2026-08-30 01:13:39,409 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=coordinator | epoch=2 | step=480 | users=1620/1620
+NDCG  | @5 0.080004 | @10 0.082753
+Recall| @5 0.085185 | @10 0.093827
+Hit   | @5 0.085185 | @10 0.093827
+================================
+2026-08-30 01:13:39,861 | INFO | 
+========== PERIODIC TEST ==========
+stage=coordinator | epoch=2 | step=480 | users=1620/1620
+NDCG  | @5 0.101046 | @10 0.103199
+Recall| @5 0.111728 | @10 0.118519
+Hit   | @5 0.111728 | @10 0.118519
+================================
+2026-08-30 01:13:39,861 | INFO | VALID_STEP step=480 stage=coordinator epoch=2 ndcg@10=0.082753 recall@10=0.093827 improved=False
+2026-08-30 01:13:39,861 | INFO | LEARNING_RATE step=480 stage=coordinator lr=0.0001
+2026-08-30 01:13:39,862 | INFO | stage=coordinator epoch=2 loss=3.555595 steps=80 transitions/s=3209.06
+2026-08-30 01:13:43,498 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=coordinator | epoch=3 | step=560 | users=1620/1620
+NDCG  | @5 0.080004 | @10 0.082771
+Recall| @5 0.085185 | @10 0.093827
+Hit   | @5 0.085185 | @10 0.093827
+================================
+2026-08-30 01:13:43,951 | INFO | 
+========== PERIODIC TEST ==========
+stage=coordinator | epoch=3 | step=560 | users=1620/1620
+NDCG  | @5 0.101073 | @10 0.103048
+Recall| @5 0.111728 | @10 0.117901
+Hit   | @5 0.111728 | @10 0.117901
+================================
+2026-08-30 01:13:43,951 | INFO | VALID_STEP step=560 stage=coordinator epoch=3 ndcg@10=0.082771 recall@10=0.093827 improved=False
+2026-08-30 01:13:43,951 | INFO | LEARNING_RATE step=560 stage=coordinator lr=0.0001
+2026-08-30 01:13:43,951 | INFO | stage=coordinator epoch=3 loss=3.549407 steps=80 transitions/s=3253.95
+2026-08-30 01:13:47,554 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=coordinator | epoch=4 | step=640 | users=1620/1620
+NDCG  | @5 0.080004 | @10 0.082769
+Recall| @5 0.085185 | @10 0.093827
+Hit   | @5 0.085185 | @10 0.093827
+================================
+2026-08-30 01:13:48,008 | INFO | 
+========== PERIODIC TEST ==========
+stage=coordinator | epoch=4 | step=640 | users=1620/1620
+NDCG  | @5 0.101100 | @10 0.103084
+Recall| @5 0.111728 | @10 0.117901
+Hit   | @5 0.111728 | @10 0.117901
+================================
+2026-08-30 01:13:48,008 | INFO | VALID_STEP step=640 stage=coordinator epoch=4 ndcg@10=0.082769 recall@10=0.093827 improved=False
+2026-08-30 01:13:48,008 | INFO | LEARNING_RATE step=640 stage=coordinator lr=0.0001
+2026-08-30 01:13:48,009 | INFO | stage=coordinator epoch=4 loss=3.546336 steps=80 transitions/s=3221.84
+2026-08-30 01:13:55,416 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=joint | epoch=1 | step=720 | users=1620/1620
+NDCG  | @5 0.079576 | @10 0.082427
+Recall| @5 0.084568 | @10 0.093210
+Hit   | @5 0.084568 | @10 0.093210
+================================
+2026-08-30 01:13:55,837 | INFO | 
+========== PERIODIC TEST ==========
+stage=joint | epoch=1 | step=720 | users=1620/1620
+NDCG  | @5 0.101440 | @10 0.103827
+Recall| @5 0.111111 | @10 0.118519
+Hit   | @5 0.111111 | @10 0.118519
+================================
+2026-08-30 01:13:55,837 | INFO | VALID_STEP step=720 stage=joint epoch=1 ndcg@10=0.082427 recall@10=0.093210 improved=False
+2026-08-30 01:13:55,837 | INFO | LEARNING_RATE step=720 stage=joint lr=5e-05
+2026-08-30 01:13:55,837 | INFO | stage=joint epoch=1 loss=4.156970 steps=80 transitions/s=1450.97
+2026-08-30 01:14:03,195 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=joint | epoch=2 | step=800 | users=1620/1620
+NDCG  | @5 0.079576 | @10 0.082818
+Recall| @5 0.084568 | @10 0.094444
+Hit   | @5 0.084568 | @10 0.094444
+================================
+2026-08-30 01:14:03,616 | INFO | 
+========== PERIODIC TEST ==========
+stage=joint | epoch=2 | step=800 | users=1620/1620
+NDCG  | @5 0.101902 | @10 0.103482
+Recall| @5 0.112346 | @10 0.117284
+Hit   | @5 0.112346 | @10 0.117284
+================================
+2026-08-30 01:14:03,616 | INFO | VALID_STEP step=800 stage=joint epoch=2 ndcg@10=0.082818 recall@10=0.094444 improved=True
+2026-08-30 01:14:03,618 | INFO | BEST_MODEL_IN_MEMORY step=800 stage=joint ndcg@10=0.082818
+2026-08-30 01:14:03,618 | INFO | LEARNING_RATE step=800 stage=joint lr=5e-05
+2026-08-30 01:14:03,618 | INFO | stage=joint epoch=2 loss=4.099154 steps=80 transitions/s=1460.18
+2026-08-30 01:14:11,149 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=joint | epoch=3 | step=880 | users=1620/1620
+NDCG  | @5 0.080003 | @10 0.083178
+Recall| @5 0.085802 | @10 0.095679
+Hit   | @5 0.085802 | @10 0.095679
+================================
+2026-08-30 01:14:11,574 | INFO | 
+========== PERIODIC TEST ==========
+stage=joint | epoch=3 | step=880 | users=1620/1620
+NDCG  | @5 0.101548 | @10 0.103346
+Recall| @5 0.111728 | @10 0.117284
+Hit   | @5 0.111728 | @10 0.117284
+================================
+2026-08-30 01:14:11,574 | INFO | VALID_STEP step=880 stage=joint epoch=3 ndcg@10=0.083178 recall@10=0.095679 improved=True
+2026-08-30 01:14:11,576 | INFO | BEST_MODEL_IN_MEMORY step=880 stage=joint ndcg@10=0.083178
+2026-08-30 01:14:11,576 | INFO | LEARNING_RATE step=880 stage=joint lr=5e-05
+2026-08-30 01:14:11,576 | INFO | stage=joint epoch=3 loss=4.069678 steps=80 transitions/s=1425.41
+2026-08-30 01:14:18,930 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=joint | epoch=4 | step=960 | users=1620/1620
+NDCG  | @5 0.080535 | @10 0.083304
+Recall| @5 0.087037 | @10 0.095679
+Hit   | @5 0.087037 | @10 0.095679
+================================
+2026-08-30 01:14:19,352 | INFO | 
+========== PERIODIC TEST ==========
+stage=joint | epoch=4 | step=960 | users=1620/1620
+NDCG  | @5 0.101826 | @10 0.102975
+Recall| @5 0.112963 | @10 0.116667
+Hit   | @5 0.112963 | @10 0.116667
+================================
+2026-08-30 01:14:19,353 | INFO | VALID_STEP step=960 stage=joint epoch=4 ndcg@10=0.083304 recall@10=0.095679 improved=True
+2026-08-30 01:14:19,354 | INFO | BEST_MODEL_IN_MEMORY step=960 stage=joint ndcg@10=0.083304
+2026-08-30 01:14:19,354 | INFO | LEARNING_RATE step=960 stage=joint lr=5e-05
+2026-08-30 01:14:19,354 | INFO | stage=joint epoch=4 loss=4.044279 steps=80 transitions/s=1461.28
+2026-08-30 01:14:26,802 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=joint | epoch=5 | step=1040 | users=1620/1620
+NDCG  | @5 0.081549 | @10 0.084433
+Recall| @5 0.088889 | @10 0.098148
+Hit   | @5 0.088889 | @10 0.098148
+================================
+2026-08-30 01:14:27,223 | INFO | 
+========== PERIODIC TEST ==========
+stage=joint | epoch=5 | step=1040 | users=1620/1620
+NDCG  | @5 0.101896 | @10 0.103611
+Recall| @5 0.112346 | @10 0.117901
+Hit   | @5 0.112346 | @10 0.117901
+================================
+2026-08-30 01:14:27,223 | INFO | VALID_STEP step=1040 stage=joint epoch=5 ndcg@10=0.084433 recall@10=0.098148 improved=True
+2026-08-30 01:14:27,224 | INFO | BEST_MODEL_IN_MEMORY step=1040 stage=joint ndcg@10=0.084433
+2026-08-30 01:14:27,224 | INFO | LEARNING_RATE step=1040 stage=joint lr=5e-05
+2026-08-30 01:14:27,225 | INFO | stage=joint epoch=5 loss=4.020534 steps=80 transitions/s=1441.89
+2026-08-30 01:14:34,660 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=joint | epoch=6 | step=1120 | users=1620/1620
+NDCG  | @5 0.082529 | @10 0.085003
+Recall| @5 0.090123 | @10 0.098148
+Hit   | @5 0.090123 | @10 0.098148
+================================
+2026-08-30 01:14:35,080 | INFO | 
+========== PERIODIC TEST ==========
+stage=joint | epoch=6 | step=1120 | users=1620/1620
+NDCG  | @5 0.101306 | @10 0.103318
+Recall| @5 0.111111 | @10 0.117284
+Hit   | @5 0.111111 | @10 0.117284
+================================
+2026-08-30 01:14:35,080 | INFO | VALID_STEP step=1120 stage=joint epoch=6 ndcg@10=0.085003 recall@10=0.098148 improved=True
+2026-08-30 01:14:35,082 | INFO | BEST_MODEL_IN_MEMORY step=1120 stage=joint ndcg@10=0.085003
+2026-08-30 01:14:35,082 | INFO | LEARNING_RATE step=1120 stage=joint lr=5e-05
+2026-08-30 01:14:35,082 | INFO | stage=joint epoch=6 loss=3.984440 steps=80 transitions/s=1444.35
+2026-08-30 01:14:42,538 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=joint | epoch=7 | step=1200 | users=1620/1620
+NDCG  | @5 0.082653 | @10 0.085003
+Recall| @5 0.090123 | @10 0.097531
+Hit   | @5 0.090123 | @10 0.097531
+================================
+2026-08-30 01:14:42,962 | INFO | 
+========== PERIODIC TEST ==========
+stage=joint | epoch=7 | step=1200 | users=1620/1620
+NDCG  | @5 0.101121 | @10 0.103622
+Recall| @5 0.111111 | @10 0.119136
+Hit   | @5 0.111111 | @10 0.119136
+================================
+2026-08-30 01:14:42,962 | INFO | VALID_STEP step=1200 stage=joint epoch=7 ndcg@10=0.085003 recall@10=0.097531 improved=False
+2026-08-30 01:14:42,962 | INFO | LEARNING_RATE step=1200 stage=joint lr=5e-05
+2026-08-30 01:14:42,963 | INFO | stage=joint epoch=7 loss=3.920035 steps=80 transitions/s=1441.29
+2026-08-30 01:14:50,403 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=joint | epoch=8 | step=1280 | users=1620/1620
+NDCG  | @5 0.082572 | @10 0.085149
+Recall| @5 0.090123 | @10 0.098148
+Hit   | @5 0.090123 | @10 0.098148
+================================
+2026-08-30 01:14:50,826 | INFO | 
+========== PERIODIC TEST ==========
+stage=joint | epoch=8 | step=1280 | users=1620/1620
+NDCG  | @5 0.101586 | @10 0.104053
+Recall| @5 0.112346 | @10 0.120370
+Hit   | @5 0.112346 | @10 0.120370
+================================
+2026-08-30 01:14:50,826 | INFO | VALID_STEP step=1280 stage=joint epoch=8 ndcg@10=0.085149 recall@10=0.098148 improved=True
+2026-08-30 01:14:50,828 | INFO | BEST_MODEL_IN_MEMORY step=1280 stage=joint ndcg@10=0.085149
+2026-08-30 01:14:50,828 | INFO | LEARNING_RATE step=1280 stage=joint lr=5e-05
+2026-08-30 01:14:50,828 | INFO | stage=joint epoch=8 loss=3.867931 steps=80 transitions/s=1444.10
+2026-08-30 01:14:58,332 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=joint | epoch=9 | step=1360 | users=1620/1620
+NDCG  | @5 0.082583 | @10 0.085521
+Recall| @5 0.090123 | @10 0.099383
+Hit   | @5 0.090123 | @10 0.099383
+================================
+2026-08-30 01:14:58,756 | INFO | 
+========== PERIODIC TEST ==========
+stage=joint | epoch=9 | step=1360 | users=1620/1620
+NDCG  | @5 0.102404 | @10 0.104332
+Recall| @5 0.113580 | @10 0.119753
+Hit   | @5 0.113580 | @10 0.119753
+================================
+2026-08-30 01:14:58,756 | INFO | VALID_STEP step=1360 stage=joint epoch=9 ndcg@10=0.085521 recall@10=0.099383 improved=True
+2026-08-30 01:14:58,757 | INFO | BEST_MODEL_IN_MEMORY step=1360 stage=joint ndcg@10=0.085521
+2026-08-30 01:14:58,757 | INFO | LEARNING_RATE step=1360 stage=joint lr=5e-05
+2026-08-30 01:14:58,758 | INFO | stage=joint epoch=9 loss=3.837528 steps=80 transitions/s=1431.03
+2026-08-30 01:15:06,250 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=joint | epoch=10 | step=1440 | users=1620/1620
+NDCG  | @5 0.082583 | @10 0.086099
+Recall| @5 0.090123 | @10 0.101235
+Hit   | @5 0.090123 | @10 0.101235
+================================
+2026-08-30 01:15:06,674 | INFO | 
+========== PERIODIC TEST ==========
+stage=joint | epoch=10 | step=1440 | users=1620/1620
+NDCG  | @5 0.102536 | @10 0.104313
+Recall| @5 0.113580 | @10 0.119136
+Hit   | @5 0.113580 | @10 0.119136
+================================
+2026-08-30 01:15:06,675 | INFO | VALID_STEP step=1440 stage=joint epoch=10 ndcg@10=0.086099 recall@10=0.101235 improved=True
+2026-08-30 01:15:06,676 | INFO | BEST_MODEL_IN_MEMORY step=1440 stage=joint ndcg@10=0.086099
+2026-08-30 01:15:06,676 | INFO | LEARNING_RATE step=1440 stage=joint lr=5e-05
+2026-08-30 01:15:06,677 | INFO | stage=joint epoch=10 loss=3.812441 steps=80 transitions/s=1433.10
+2026-08-30 01:15:07,104 | INFO | 
+========== FINAL CURRENT VALIDATION ==========
+stage=final | epoch=0 | step=1440 | users=1620/1620
+NDCG  | @5 0.082583 | @10 0.086099
+Recall| @5 0.090123 | @10 0.101235
+Hit   | @5 0.090123 | @10 0.101235
+================================
+2026-08-30 01:15:07,104 | INFO | VALID_STEP step=1440 stage=final epoch=0 ndcg@10=0.086099 recall@10=0.101235 improved=False
+2026-08-30 01:15:07,105 | INFO | RESTORE_BEST step=1440 stage=joint ndcg@10=0.086099
+2026-08-30 01:15:07,955 | INFO | 
+========== BEST CHECKPOINT VALIDATION ==========
+stage=joint | epoch=0 | step=1440 | users=1620/1620
+NDCG  | @5 0.082583 | @10 0.086099
+Recall| @5 0.090123 | @10 0.101235
+Hit   | @5 0.090123 | @10 0.101235
+================================
+2026-08-30 01:15:07,955 | INFO | 
+========== FINAL FULL TEST ==========
+stage=joint | epoch=0 | step=1440 | users=1620/1620
+NDCG  | @5 0.102536 | @10 0.104313
+Recall| @5 0.113580 | @10 0.119136
+Hit   | @5 0.113580 | @10 0.119136
+================================
+2026-08-30 01:15:07,956 | INFO | VALID_BEST {"evaluated_users": 1620, "hit@10": 0.10123456790123457, "hit@5": 0.09012345679012346, "ndcg@10": 0.08609938820203146, "ndcg@5": 0.08258292527846348, "preference_change_probability": 0.02133060031467014, "preference_current_entropy": 4.043034424016505, "preference_next_entropy": 4.129195837326992, "preference_ranking_weight": 0.21337890625, "recall@10": 0.10123456790123457, "recall@5": 0.09012345679012346, "scores_per_second": 26843993.025990043, "total_users": 1620, "users_per_second": 3844.7426276124384}
+2026-08-30 01:15:07,956 | INFO | TEST_FINAL {"evaluated_users": 1620, "hit@10": 0.1191358024691358, "hit@5": 0.11358024691358025, "ndcg@10": 0.10431329939100477, "ndcg@5": 0.10253568151850759, "preference_change_probability": 0.021441819932725696, "preference_current_entropy": 4.057479740660868, "preference_next_entropy": 4.130040458396629, "preference_ranking_weight": 0.21337890625, "recall@10": 0.1191358024691358, "recall@5": 0.11358024691358025, "scores_per_second": 26528131.771680135, "total_users": 1620, "users_per_second": 3799.503261483835}
+2026-08-30 01:15:07,956 | INFO | TARGET_RESULT metric=recall@10 target=>0.150000 actual=0.119136 achieved=False
+2026-08-30 01:15:08,161 | INFO | scores=/workspace/P78123011/MediaTek_2026_project/ver4/outputs_mamba_rl/amazons_lora/Full_Beauty/rl_20260830_011258/Full_Beauty_scores.json
+2026-08-30 01:15:08,161 | INFO | outputs=/workspace/P78123011/MediaTek_2026_project/ver4/outputs_mamba_rl/amazons_lora/Full_Beauty/rl_20260830_011258

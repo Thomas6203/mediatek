@@ -1,0 +1,7 @@
+{
+  "elapsed_seconds_total": 1.8429160951636732,
+  "evaluation_contract_sha256": null,
+  "final_model": "/workspace/S114065701/mediatek/experiments/smoke/synthetic_20260901_220857/multi_agent_lora.pt",
+  "metrics": "/workspace/S114065701/mediatek/experiments/smoke/synthetic_20260901_220857/metrics.json",
+  "status": "completed"
+}

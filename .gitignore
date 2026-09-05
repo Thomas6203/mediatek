@@ -1,0 +1,44 @@
+# ==========================================
+# Python
+# ==========================================
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+.venv/
+.venvs/
+**/.venv/
+**/.venvs/
+
+# ==========================================
+# Cache / downloaded datasets / models
+# ==========================================
+cache/
+.cache/
+
+# ==========================================
+# Generated experiment outputs
+# ==========================================
+SIGMA/outputs_ver4_protocol_5runs/
+
+# Large prebuilt binaries
+SIGMA/vendor_wheels/
+SIGMA/vendor/*.so
+
+# ==========================================
+# Generated / processed datasets
+# ==========================================
+sequential-capacity-probes/data/processed/
+
+LLM-SRec/SeqRec/data_*/text_name_dict.json.gz
+
+# ==========================================
+# Model / training checkpoints
+# ==========================================
+experiments/**/run_checkpoint.pt
+
+# ==========================================
+# Common editor / OS files
+# ==========================================
+.vscode/
+.DS_Store

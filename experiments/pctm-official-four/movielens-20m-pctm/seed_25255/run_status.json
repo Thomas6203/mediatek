@@ -1,0 +1,14 @@
+{
+  "checkpoint": "/workspace/S114065701/mediatek/experiments/pctm-official-four/movielens-20m-pctm/seed_25255/run_checkpoint.pt",
+  "cursor": {
+    "epoch": 1,
+    "epoch_seed": 26264,
+    "next_start": 14313344,
+    "pending_validation": false,
+    "phase": "tuning",
+    "stage": "specialists"
+  },
+  "elapsed_seconds_total": 60484.77957007615,
+  "reason": "periodic",
+  "status": "running"
+}

@@ -1,0 +1,30 @@
+{
+  "dataset": "amazon-sports-pctm",
+  "directory": "s3_sports",
+  "evaluation": {
+    "catalogue_items": 18347,
+    "catalogue_sha256": "cdb6cec2fbd3f90f53ce508db0c364d9339586eb6b0f48544f8f26dfe11e624b",
+    "eligible_test_users": 35539,
+    "histories_sha256": "63475912e1461bd31ce12d4654f072ade7970eed7d487b20a919df2f35348e66",
+    "protocol": {
+      "filter_seen": true,
+      "full_catalogue": true,
+      "k": 10
+    },
+    "targets_sha256": "fbc44281bf82224060f10303247f58522bc83a34c8aea4535c021ac3f04c4c28"
+  },
+  "evaluation_contract_sha256": "4637d28e8240f554e5f2dd031bd8623c69908f5ffc449ec1666816aaa579ee00",
+  "file_contract_sha256": "f752772303b771d78806ac7cd4d3d480b8322891f0716ab70e677510066cd561",
+  "files": {
+    "holdout.csv": {
+      "rows": 35539,
+      "sha256": "2fb358ca824c8df1e655275ba13d106b1c1b2dc1bb131810cc8519919abc1139"
+    },
+    "train.csv": {
+      "rows": 260739,
+      "sha256": "e90df6401241237709a9386d91fd9c2f24eb132665e99e74d6f5af5e12b8b9a6"
+    }
+  },
+  "schema_version": 1,
+  "verification": "official-pinned"
+}

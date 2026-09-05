@@ -1,0 +1,1842 @@
+[
+  {
+    "user": {
+      "user_index": 0,
+      "display_name": "anonymous_user_0"
+    },
+    "history": [
+      {
+        "item_index": 0,
+        "item_name": "skin cleanser"
+      },
+      {
+        "item_index": 1,
+        "item_name": "face cream"
+      },
+      {
+        "item_index": 2,
+        "item_name": "body lotion"
+      },
+      {
+        "item_index": 3,
+        "item_name": "vitamin serum"
+      }
+    ],
+    "target": {
+      "item_index": 4,
+      "item_name": "hair shampoo"
+    },
+    "top_items": [
+      {
+        "item_index": 4,
+        "item_name": "hair shampoo"
+      },
+      {
+        "item_index": 2,
+        "item_name": "body lotion"
+      },
+      {
+        "item_index": 0,
+        "item_name": "skin cleanser"
+      },
+      {
+        "item_index": 3,
+        "item_name": "vitamin serum"
+      },
+      {
+        "item_index": 1,
+        "item_name": "face cream"
+      }
+    ],
+    "agent_weights": {
+      "long": 0.5,
+      "short": 0.5
+    },
+    "preference_analysis": {
+      "current_top": [
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.381644
+        },
+        {
+          "preference": "latent_preference_3",
+          "probability": 0.311185
+        },
+        {
+          "preference": "latent_preference_1",
+          "probability": 0.301905
+        }
+      ],
+      "predicted_next_top": [
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.338673
+        },
+        {
+          "preference": "latent_preference_1",
+          "probability": 0.32277
+        },
+        {
+          "preference": "latent_preference_2",
+          "probability": 0.26273
+        }
+      ],
+      "transition_probability": 0.229858,
+      "ranking_weight": 0.199951,
+      "uncertainty": 0.922195
+    },
+    "recommendation": {
+      "item_index": 4,
+      "reason": null,
+      "item_name": "hair shampoo"
+    }
+  },
+  {
+    "user": {
+      "user_index": 1,
+      "display_name": "anonymous_user_1"
+    },
+    "history": [
+      {
+        "item_index": 3,
+        "item_name": "vitamin serum"
+      },
+      {
+        "item_index": 4,
+        "item_name": "hair shampoo"
+      },
+      {
+        "item_index": 0,
+        "item_name": "skin cleanser"
+      },
+      {
+        "item_index": 1,
+        "item_name": "face cream"
+      }
+    ],
+    "target": {
+      "item_index": 2,
+      "item_name": "body lotion"
+    },
+    "top_items": [
+      {
+        "item_index": 2,
+        "item_name": "body lotion"
+      },
+      {
+        "item_index": 3,
+        "item_name": "vitamin serum"
+      },
+      {
+        "item_index": 0,
+        "item_name": "skin cleanser"
+      },
+      {
+        "item_index": 4,
+        "item_name": "hair shampoo"
+      },
+      {
+        "item_index": 1,
+        "item_name": "face cream"
+      }
+    ],
+    "agent_weights": {
+      "long": 0.5,
+      "short": 0.5
+    },
+    "preference_analysis": {
+      "current_top": [
+        {
+          "preference": "latent_preference_3",
+          "probability": 0.55812
+        },
+        {
+          "preference": "latent_preference_1",
+          "probability": 0.214597
+        },
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.114418
+        }
+      ],
+      "predicted_next_top": [
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.338193
+        },
+        {
+          "preference": "latent_preference_1",
+          "probability": 0.323534
+        },
+        {
+          "preference": "latent_preference_2",
+          "probability": 0.266246
+        }
+      ],
+      "transition_probability": 0.236206,
+      "ranking_weight": 0.199951,
+      "uncertainty": 0.918676
+    },
+    "recommendation": {
+      "item_index": 2,
+      "reason": null,
+      "item_name": "body lotion"
+    }
+  },
+  {
+    "user": {
+      "user_index": 2,
+      "display_name": "anonymous_user_2"
+    },
+    "history": [
+      {
+        "item_index": 0,
+        "item_name": "skin cleanser"
+      },
+      {
+        "item_index": 1,
+        "item_name": "face cream"
+      },
+      {
+        "item_index": 2,
+        "item_name": "body lotion"
+      },
+      {
+        "item_index": 3,
+        "item_name": "vitamin serum"
+      }
+    ],
+    "target": {
+      "item_index": 4,
+      "item_name": "hair shampoo"
+    },
+    "top_items": [
+      {
+        "item_index": 4,
+        "item_name": "hair shampoo"
+      },
+      {
+        "item_index": 2,
+        "item_name": "body lotion"
+      },
+      {
+        "item_index": 0,
+        "item_name": "skin cleanser"
+      },
+      {
+        "item_index": 3,
+        "item_name": "vitamin serum"
+      },
+      {
+        "item_index": 1,
+        "item_name": "face cream"
+      }
+    ],
+    "agent_weights": {
+      "long": 0.5,
+      "short": 0.5
+    },
+    "preference_analysis": {
+      "current_top": [
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.381644
+        },
+        {
+          "preference": "latent_preference_3",
+          "probability": 0.311185
+        },
+        {
+          "preference": "latent_preference_1",
+          "probability": 0.301905
+        }
+      ],
+      "predicted_next_top": [
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.338673
+        },
+        {
+          "preference": "latent_preference_1",
+          "probability": 0.32277
+        },
+        {
+          "preference": "latent_preference_2",
+          "probability": 0.26273
+        }
+      ],
+      "transition_probability": 0.229858,
+      "ranking_weight": 0.199951,
+      "uncertainty": 0.922195
+    },
+    "recommendation": {
+      "item_index": 4,
+      "reason": null,
+      "item_name": "hair shampoo"
+    }
+  },
+  {
+    "user": {
+      "user_index": 3,
+      "display_name": "anonymous_user_3"
+    },
+    "history": [
+      {
+        "item_index": 3,
+        "item_name": "vitamin serum"
+      },
+      {
+        "item_index": 4,
+        "item_name": "hair shampoo"
+      },
+      {
+        "item_index": 0,
+        "item_name": "skin cleanser"
+      },
+      {
+        "item_index": 1,
+        "item_name": "face cream"
+      }
+    ],
+    "target": {
+      "item_index": 2,
+      "item_name": "body lotion"
+    },
+    "top_items": [
+      {
+        "item_index": 2,
+        "item_name": "body lotion"
+      },
+      {
+        "item_index": 3,
+        "item_name": "vitamin serum"
+      },
+      {
+        "item_index": 0,
+        "item_name": "skin cleanser"
+      },
+      {
+        "item_index": 4,
+        "item_name": "hair shampoo"
+      },
+      {
+        "item_index": 1,
+        "item_name": "face cream"
+      }
+    ],
+    "agent_weights": {
+      "long": 0.5,
+      "short": 0.5
+    },
+    "preference_analysis": {
+      "current_top": [
+        {
+          "preference": "latent_preference_3",
+          "probability": 0.55812
+        },
+        {
+          "preference": "latent_preference_1",
+          "probability": 0.214597
+        },
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.114418
+        }
+      ],
+      "predicted_next_top": [
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.338193
+        },
+        {
+          "preference": "latent_preference_1",
+          "probability": 0.323534
+        },
+        {
+          "preference": "latent_preference_2",
+          "probability": 0.266246
+        }
+      ],
+      "transition_probability": 0.236206,
+      "ranking_weight": 0.199951,
+      "uncertainty": 0.918676
+    },
+    "recommendation": {
+      "item_index": 2,
+      "reason": null,
+      "item_name": "body lotion"
+    }
+  },
+  {
+    "user": {
+      "user_index": 4,
+      "display_name": "anonymous_user_4"
+    },
+    "history": [
+      {
+        "item_index": 1,
+        "item_name": "face cream"
+      },
+      {
+        "item_index": 2,
+        "item_name": "body lotion"
+      },
+      {
+        "item_index": 3,
+        "item_name": "vitamin serum"
+      },
+      {
+        "item_index": 4,
+        "item_name": "hair shampoo"
+      }
+    ],
+    "target": {
+      "item_index": 0,
+      "item_name": "skin cleanser"
+    },
+    "top_items": [
+      {
+        "item_index": 0,
+        "item_name": "skin cleanser"
+      },
+      {
+        "item_index": 3,
+        "item_name": "vitamin serum"
+      },
+      {
+        "item_index": 1,
+        "item_name": "face cream"
+      },
+      {
+        "item_index": 4,
+        "item_name": "hair shampoo"
+      },
+      {
+        "item_index": 2,
+        "item_name": "body lotion"
+      }
+    ],
+    "agent_weights": {
+      "long": 0.5,
+      "short": 0.5
+    },
+    "preference_analysis": {
+      "current_top": [
+        {
+          "preference": "latent_preference_2",
+          "probability": 0.875647
+        },
+        {
+          "preference": "latent_preference_1",
+          "probability": 0.081368
+        },
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.028928
+        }
+      ],
+      "predicted_next_top": [
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.356059
+        },
+        {
+          "preference": "latent_preference_1",
+          "probability": 0.33063
+        },
+        {
+          "preference": "latent_preference_2",
+          "probability": 0.229244
+        }
+      ],
+      "transition_probability": 0.24939,
+      "ranking_weight": 0.199951,
+      "uncertainty": 0.922925
+    },
+    "recommendation": {
+      "item_index": 0,
+      "reason": null,
+      "item_name": "skin cleanser"
+    }
+  },
+  {
+    "user": {
+      "user_index": 5,
+      "display_name": "anonymous_user_5"
+    },
+    "history": [
+      {
+        "item_index": 4,
+        "item_name": "hair shampoo"
+      },
+      {
+        "item_index": 0,
+        "item_name": "skin cleanser"
+      },
+      {
+        "item_index": 1,
+        "item_name": "face cream"
+      },
+      {
+        "item_index": 2,
+        "item_name": "body lotion"
+      }
+    ],
+    "target": {
+      "item_index": 3,
+      "item_name": "vitamin serum"
+    },
+    "top_items": [
+      {
+        "item_index": 3,
+        "item_name": "vitamin serum"
+      },
+      {
+        "item_index": 2,
+        "item_name": "body lotion"
+      },
+      {
+        "item_index": 0,
+        "item_name": "skin cleanser"
+      },
+      {
+        "item_index": 4,
+        "item_name": "hair shampoo"
+      },
+      {
+        "item_index": 1,
+        "item_name": "face cream"
+      }
+    ],
+    "agent_weights": {
+      "long": 0.5,
+      "short": 0.5
+    },
+    "preference_analysis": {
+      "current_top": [
+        {
+          "preference": "latent_preference_2",
+          "probability": 0.712519
+        },
+        {
+          "preference": "latent_preference_3",
+          "probability": 0.223548
+        },
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.036493
+        }
+      ],
+      "predicted_next_top": [
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.354121
+        },
+        {
+          "preference": "latent_preference_1",
+          "probability": 0.318355
+        },
+        {
+          "preference": "latent_preference_2",
+          "probability": 0.243725
+        }
+      ],
+      "transition_probability": 0.250244,
+      "ranking_weight": 0.199951,
+      "uncertainty": 0.926095
+    },
+    "recommendation": {
+      "item_index": 3,
+      "reason": null,
+      "item_name": "vitamin serum"
+    }
+  },
+  {
+    "user": {
+      "user_index": 6,
+      "display_name": "anonymous_user_6"
+    },
+    "history": [
+      {
+        "item_index": 2,
+        "item_name": "body lotion"
+      },
+      {
+        "item_index": 3,
+        "item_name": "vitamin serum"
+      },
+      {
+        "item_index": 4,
+        "item_name": "hair shampoo"
+      },
+      {
+        "item_index": 0,
+        "item_name": "skin cleanser"
+      }
+    ],
+    "target": {
+      "item_index": 1,
+      "item_name": "face cream"
+    },
+    "top_items": [
+      {
+        "item_index": 1,
+        "item_name": "face cream"
+      },
+      {
+        "item_index": 3,
+        "item_name": "vitamin serum"
+      },
+      {
+        "item_index": 0,
+        "item_name": "skin cleanser"
+      },
+      {
+        "item_index": 4,
+        "item_name": "hair shampoo"
+      },
+      {
+        "item_index": 2,
+        "item_name": "body lotion"
+      }
+    ],
+    "agent_weights": {
+      "long": 0.5,
+      "short": 0.5
+    },
+    "preference_analysis": {
+      "current_top": [
+        {
+          "preference": "latent_preference_1",
+          "probability": 0.693758
+        },
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.144288
+        },
+        {
+          "preference": "latent_preference_3",
+          "probability": 0.102216
+        }
+      ],
+      "predicted_next_top": [
+        {
+          "preference": "latent_preference_1",
+          "probability": 0.373378
+        },
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.33132
+        },
+        {
+          "preference": "latent_preference_2",
+          "probability": 0.234111
+        }
+      ],
+      "transition_probability": 0.192749,
+      "ranking_weight": 0.199951,
+      "uncertainty": 0.897869
+    },
+    "recommendation": {
+      "item_index": 1,
+      "reason": null,
+      "item_name": "face cream"
+    }
+  },
+  {
+    "user": {
+      "user_index": 7,
+      "display_name": "anonymous_user_7"
+    },
+    "history": [
+      {
+        "item_index": 0,
+        "item_name": "skin cleanser"
+      },
+      {
+        "item_index": 1,
+        "item_name": "face cream"
+      },
+      {
+        "item_index": 2,
+        "item_name": "body lotion"
+      },
+      {
+        "item_index": 3,
+        "item_name": "vitamin serum"
+      }
+    ],
+    "target": {
+      "item_index": 4,
+      "item_name": "hair shampoo"
+    },
+    "top_items": [
+      {
+        "item_index": 4,
+        "item_name": "hair shampoo"
+      },
+      {
+        "item_index": 2,
+        "item_name": "body lotion"
+      },
+      {
+        "item_index": 0,
+        "item_name": "skin cleanser"
+      },
+      {
+        "item_index": 3,
+        "item_name": "vitamin serum"
+      },
+      {
+        "item_index": 1,
+        "item_name": "face cream"
+      }
+    ],
+    "agent_weights": {
+      "long": 0.5,
+      "short": 0.5
+    },
+    "preference_analysis": {
+      "current_top": [
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.381644
+        },
+        {
+          "preference": "latent_preference_3",
+          "probability": 0.311185
+        },
+        {
+          "preference": "latent_preference_1",
+          "probability": 0.301905
+        }
+      ],
+      "predicted_next_top": [
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.338673
+        },
+        {
+          "preference": "latent_preference_1",
+          "probability": 0.32277
+        },
+        {
+          "preference": "latent_preference_2",
+          "probability": 0.26273
+        }
+      ],
+      "transition_probability": 0.229858,
+      "ranking_weight": 0.199951,
+      "uncertainty": 0.922195
+    },
+    "recommendation": {
+      "item_index": 4,
+      "reason": null,
+      "item_name": "hair shampoo"
+    }
+  },
+  {
+    "user": {
+      "user_index": 8,
+      "display_name": "anonymous_user_8"
+    },
+    "history": [
+      {
+        "item_index": 3,
+        "item_name": "vitamin serum"
+      },
+      {
+        "item_index": 4,
+        "item_name": "hair shampoo"
+      },
+      {
+        "item_index": 0,
+        "item_name": "skin cleanser"
+      },
+      {
+        "item_index": 1,
+        "item_name": "face cream"
+      }
+    ],
+    "target": {
+      "item_index": 2,
+      "item_name": "body lotion"
+    },
+    "top_items": [
+      {
+        "item_index": 2,
+        "item_name": "body lotion"
+      },
+      {
+        "item_index": 3,
+        "item_name": "vitamin serum"
+      },
+      {
+        "item_index": 0,
+        "item_name": "skin cleanser"
+      },
+      {
+        "item_index": 4,
+        "item_name": "hair shampoo"
+      },
+      {
+        "item_index": 1,
+        "item_name": "face cream"
+      }
+    ],
+    "agent_weights": {
+      "long": 0.5,
+      "short": 0.5
+    },
+    "preference_analysis": {
+      "current_top": [
+        {
+          "preference": "latent_preference_3",
+          "probability": 0.55812
+        },
+        {
+          "preference": "latent_preference_1",
+          "probability": 0.214597
+        },
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.114418
+        }
+      ],
+      "predicted_next_top": [
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.338193
+        },
+        {
+          "preference": "latent_preference_1",
+          "probability": 0.323534
+        },
+        {
+          "preference": "latent_preference_2",
+          "probability": 0.266246
+        }
+      ],
+      "transition_probability": 0.236206,
+      "ranking_weight": 0.199951,
+      "uncertainty": 0.918676
+    },
+    "recommendation": {
+      "item_index": 2,
+      "reason": null,
+      "item_name": "body lotion"
+    }
+  },
+  {
+    "user": {
+      "user_index": 9,
+      "display_name": "anonymous_user_9"
+    },
+    "history": [
+      {
+        "item_index": 1,
+        "item_name": "face cream"
+      },
+      {
+        "item_index": 2,
+        "item_name": "body lotion"
+      },
+      {
+        "item_index": 3,
+        "item_name": "vitamin serum"
+      },
+      {
+        "item_index": 4,
+        "item_name": "hair shampoo"
+      }
+    ],
+    "target": {
+      "item_index": 0,
+      "item_name": "skin cleanser"
+    },
+    "top_items": [
+      {
+        "item_index": 0,
+        "item_name": "skin cleanser"
+      },
+      {
+        "item_index": 3,
+        "item_name": "vitamin serum"
+      },
+      {
+        "item_index": 1,
+        "item_name": "face cream"
+      },
+      {
+        "item_index": 4,
+        "item_name": "hair shampoo"
+      },
+      {
+        "item_index": 2,
+        "item_name": "body lotion"
+      }
+    ],
+    "agent_weights": {
+      "long": 0.5,
+      "short": 0.5
+    },
+    "preference_analysis": {
+      "current_top": [
+        {
+          "preference": "latent_preference_2",
+          "probability": 0.875647
+        },
+        {
+          "preference": "latent_preference_1",
+          "probability": 0.081368
+        },
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.028928
+        }
+      ],
+      "predicted_next_top": [
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.356059
+        },
+        {
+          "preference": "latent_preference_1",
+          "probability": 0.33063
+        },
+        {
+          "preference": "latent_preference_2",
+          "probability": 0.229244
+        }
+      ],
+      "transition_probability": 0.24939,
+      "ranking_weight": 0.199951,
+      "uncertainty": 0.922925
+    },
+    "recommendation": {
+      "item_index": 0,
+      "reason": null,
+      "item_name": "skin cleanser"
+    }
+  },
+  {
+    "user": {
+      "user_index": 10,
+      "display_name": "anonymous_user_10"
+    },
+    "history": [
+      {
+        "item_index": 4,
+        "item_name": "hair shampoo"
+      },
+      {
+        "item_index": 0,
+        "item_name": "skin cleanser"
+      },
+      {
+        "item_index": 1,
+        "item_name": "face cream"
+      },
+      {
+        "item_index": 2,
+        "item_name": "body lotion"
+      }
+    ],
+    "target": {
+      "item_index": 3,
+      "item_name": "vitamin serum"
+    },
+    "top_items": [
+      {
+        "item_index": 3,
+        "item_name": "vitamin serum"
+      },
+      {
+        "item_index": 2,
+        "item_name": "body lotion"
+      },
+      {
+        "item_index": 0,
+        "item_name": "skin cleanser"
+      },
+      {
+        "item_index": 4,
+        "item_name": "hair shampoo"
+      },
+      {
+        "item_index": 1,
+        "item_name": "face cream"
+      }
+    ],
+    "agent_weights": {
+      "long": 0.5,
+      "short": 0.5
+    },
+    "preference_analysis": {
+      "current_top": [
+        {
+          "preference": "latent_preference_2",
+          "probability": 0.712519
+        },
+        {
+          "preference": "latent_preference_3",
+          "probability": 0.223548
+        },
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.036493
+        }
+      ],
+      "predicted_next_top": [
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.354121
+        },
+        {
+          "preference": "latent_preference_1",
+          "probability": 0.318355
+        },
+        {
+          "preference": "latent_preference_2",
+          "probability": 0.243725
+        }
+      ],
+      "transition_probability": 0.250244,
+      "ranking_weight": 0.199951,
+      "uncertainty": 0.926095
+    },
+    "recommendation": {
+      "item_index": 3,
+      "reason": null,
+      "item_name": "vitamin serum"
+    }
+  },
+  {
+    "user": {
+      "user_index": 11,
+      "display_name": "anonymous_user_11"
+    },
+    "history": [
+      {
+        "item_index": 2,
+        "item_name": "body lotion"
+      },
+      {
+        "item_index": 3,
+        "item_name": "vitamin serum"
+      },
+      {
+        "item_index": 4,
+        "item_name": "hair shampoo"
+      },
+      {
+        "item_index": 0,
+        "item_name": "skin cleanser"
+      }
+    ],
+    "target": {
+      "item_index": 1,
+      "item_name": "face cream"
+    },
+    "top_items": [
+      {
+        "item_index": 1,
+        "item_name": "face cream"
+      },
+      {
+        "item_index": 3,
+        "item_name": "vitamin serum"
+      },
+      {
+        "item_index": 0,
+        "item_name": "skin cleanser"
+      },
+      {
+        "item_index": 4,
+        "item_name": "hair shampoo"
+      },
+      {
+        "item_index": 2,
+        "item_name": "body lotion"
+      }
+    ],
+    "agent_weights": {
+      "long": 0.5,
+      "short": 0.5
+    },
+    "preference_analysis": {
+      "current_top": [
+        {
+          "preference": "latent_preference_1",
+          "probability": 0.693758
+        },
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.144288
+        },
+        {
+          "preference": "latent_preference_3",
+          "probability": 0.102216
+        }
+      ],
+      "predicted_next_top": [
+        {
+          "preference": "latent_preference_1",
+          "probability": 0.373378
+        },
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.33132
+        },
+        {
+          "preference": "latent_preference_2",
+          "probability": 0.234111
+        }
+      ],
+      "transition_probability": 0.192749,
+      "ranking_weight": 0.199951,
+      "uncertainty": 0.897869
+    },
+    "recommendation": {
+      "item_index": 1,
+      "reason": null,
+      "item_name": "face cream"
+    }
+  },
+  {
+    "user": {
+      "user_index": 12,
+      "display_name": "anonymous_user_12"
+    },
+    "history": [
+      {
+        "item_index": 1,
+        "item_name": "face cream"
+      },
+      {
+        "item_index": 2,
+        "item_name": "body lotion"
+      },
+      {
+        "item_index": 3,
+        "item_name": "vitamin serum"
+      },
+      {
+        "item_index": 4,
+        "item_name": "hair shampoo"
+      }
+    ],
+    "target": {
+      "item_index": 0,
+      "item_name": "skin cleanser"
+    },
+    "top_items": [
+      {
+        "item_index": 0,
+        "item_name": "skin cleanser"
+      },
+      {
+        "item_index": 3,
+        "item_name": "vitamin serum"
+      },
+      {
+        "item_index": 1,
+        "item_name": "face cream"
+      },
+      {
+        "item_index": 4,
+        "item_name": "hair shampoo"
+      },
+      {
+        "item_index": 2,
+        "item_name": "body lotion"
+      }
+    ],
+    "agent_weights": {
+      "long": 0.5,
+      "short": 0.5
+    },
+    "preference_analysis": {
+      "current_top": [
+        {
+          "preference": "latent_preference_2",
+          "probability": 0.875647
+        },
+        {
+          "preference": "latent_preference_1",
+          "probability": 0.081368
+        },
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.028928
+        }
+      ],
+      "predicted_next_top": [
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.356059
+        },
+        {
+          "preference": "latent_preference_1",
+          "probability": 0.33063
+        },
+        {
+          "preference": "latent_preference_2",
+          "probability": 0.229244
+        }
+      ],
+      "transition_probability": 0.24939,
+      "ranking_weight": 0.199951,
+      "uncertainty": 0.922925
+    },
+    "recommendation": {
+      "item_index": 0,
+      "reason": null,
+      "item_name": "skin cleanser"
+    }
+  },
+  {
+    "user": {
+      "user_index": 13,
+      "display_name": "anonymous_user_13"
+    },
+    "history": [
+      {
+        "item_index": 0,
+        "item_name": "skin cleanser"
+      },
+      {
+        "item_index": 1,
+        "item_name": "face cream"
+      },
+      {
+        "item_index": 2,
+        "item_name": "body lotion"
+      },
+      {
+        "item_index": 3,
+        "item_name": "vitamin serum"
+      }
+    ],
+    "target": {
+      "item_index": 4,
+      "item_name": "hair shampoo"
+    },
+    "top_items": [
+      {
+        "item_index": 4,
+        "item_name": "hair shampoo"
+      },
+      {
+        "item_index": 2,
+        "item_name": "body lotion"
+      },
+      {
+        "item_index": 0,
+        "item_name": "skin cleanser"
+      },
+      {
+        "item_index": 3,
+        "item_name": "vitamin serum"
+      },
+      {
+        "item_index": 1,
+        "item_name": "face cream"
+      }
+    ],
+    "agent_weights": {
+      "long": 0.5,
+      "short": 0.5
+    },
+    "preference_analysis": {
+      "current_top": [
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.381644
+        },
+        {
+          "preference": "latent_preference_3",
+          "probability": 0.311185
+        },
+        {
+          "preference": "latent_preference_1",
+          "probability": 0.301905
+        }
+      ],
+      "predicted_next_top": [
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.338673
+        },
+        {
+          "preference": "latent_preference_1",
+          "probability": 0.32277
+        },
+        {
+          "preference": "latent_preference_2",
+          "probability": 0.26273
+        }
+      ],
+      "transition_probability": 0.229858,
+      "ranking_weight": 0.199951,
+      "uncertainty": 0.922195
+    },
+    "recommendation": {
+      "item_index": 4,
+      "reason": null,
+      "item_name": "hair shampoo"
+    }
+  },
+  {
+    "user": {
+      "user_index": 14,
+      "display_name": "anonymous_user_14"
+    },
+    "history": [
+      {
+        "item_index": 3,
+        "item_name": "vitamin serum"
+      },
+      {
+        "item_index": 4,
+        "item_name": "hair shampoo"
+      },
+      {
+        "item_index": 0,
+        "item_name": "skin cleanser"
+      },
+      {
+        "item_index": 1,
+        "item_name": "face cream"
+      }
+    ],
+    "target": {
+      "item_index": 2,
+      "item_name": "body lotion"
+    },
+    "top_items": [
+      {
+        "item_index": 2,
+        "item_name": "body lotion"
+      },
+      {
+        "item_index": 3,
+        "item_name": "vitamin serum"
+      },
+      {
+        "item_index": 0,
+        "item_name": "skin cleanser"
+      },
+      {
+        "item_index": 4,
+        "item_name": "hair shampoo"
+      },
+      {
+        "item_index": 1,
+        "item_name": "face cream"
+      }
+    ],
+    "agent_weights": {
+      "long": 0.5,
+      "short": 0.5
+    },
+    "preference_analysis": {
+      "current_top": [
+        {
+          "preference": "latent_preference_3",
+          "probability": 0.55812
+        },
+        {
+          "preference": "latent_preference_1",
+          "probability": 0.214597
+        },
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.114418
+        }
+      ],
+      "predicted_next_top": [
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.338193
+        },
+        {
+          "preference": "latent_preference_1",
+          "probability": 0.323534
+        },
+        {
+          "preference": "latent_preference_2",
+          "probability": 0.266246
+        }
+      ],
+      "transition_probability": 0.236206,
+      "ranking_weight": 0.199951,
+      "uncertainty": 0.918676
+    },
+    "recommendation": {
+      "item_index": 2,
+      "reason": null,
+      "item_name": "body lotion"
+    }
+  },
+  {
+    "user": {
+      "user_index": 15,
+      "display_name": "anonymous_user_15"
+    },
+    "history": [
+      {
+        "item_index": 1,
+        "item_name": "face cream"
+      },
+      {
+        "item_index": 2,
+        "item_name": "body lotion"
+      },
+      {
+        "item_index": 3,
+        "item_name": "vitamin serum"
+      },
+      {
+        "item_index": 4,
+        "item_name": "hair shampoo"
+      }
+    ],
+    "target": {
+      "item_index": 0,
+      "item_name": "skin cleanser"
+    },
+    "top_items": [
+      {
+        "item_index": 0,
+        "item_name": "skin cleanser"
+      },
+      {
+        "item_index": 3,
+        "item_name": "vitamin serum"
+      },
+      {
+        "item_index": 1,
+        "item_name": "face cream"
+      },
+      {
+        "item_index": 4,
+        "item_name": "hair shampoo"
+      },
+      {
+        "item_index": 2,
+        "item_name": "body lotion"
+      }
+    ],
+    "agent_weights": {
+      "long": 0.5,
+      "short": 0.5
+    },
+    "preference_analysis": {
+      "current_top": [
+        {
+          "preference": "latent_preference_2",
+          "probability": 0.875647
+        },
+        {
+          "preference": "latent_preference_1",
+          "probability": 0.081368
+        },
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.028928
+        }
+      ],
+      "predicted_next_top": [
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.356059
+        },
+        {
+          "preference": "latent_preference_1",
+          "probability": 0.33063
+        },
+        {
+          "preference": "latent_preference_2",
+          "probability": 0.229244
+        }
+      ],
+      "transition_probability": 0.24939,
+      "ranking_weight": 0.199951,
+      "uncertainty": 0.922925
+    },
+    "recommendation": {
+      "item_index": 0,
+      "reason": null,
+      "item_name": "skin cleanser"
+    }
+  },
+  {
+    "user": {
+      "user_index": 16,
+      "display_name": "anonymous_user_16"
+    },
+    "history": [
+      {
+        "item_index": 4,
+        "item_name": "hair shampoo"
+      },
+      {
+        "item_index": 0,
+        "item_name": "skin cleanser"
+      },
+      {
+        "item_index": 1,
+        "item_name": "face cream"
+      },
+      {
+        "item_index": 2,
+        "item_name": "body lotion"
+      }
+    ],
+    "target": {
+      "item_index": 3,
+      "item_name": "vitamin serum"
+    },
+    "top_items": [
+      {
+        "item_index": 3,
+        "item_name": "vitamin serum"
+      },
+      {
+        "item_index": 2,
+        "item_name": "body lotion"
+      },
+      {
+        "item_index": 0,
+        "item_name": "skin cleanser"
+      },
+      {
+        "item_index": 4,
+        "item_name": "hair shampoo"
+      },
+      {
+        "item_index": 1,
+        "item_name": "face cream"
+      }
+    ],
+    "agent_weights": {
+      "long": 0.5,
+      "short": 0.5
+    },
+    "preference_analysis": {
+      "current_top": [
+        {
+          "preference": "latent_preference_2",
+          "probability": 0.712519
+        },
+        {
+          "preference": "latent_preference_3",
+          "probability": 0.223548
+        },
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.036493
+        }
+      ],
+      "predicted_next_top": [
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.354121
+        },
+        {
+          "preference": "latent_preference_1",
+          "probability": 0.318355
+        },
+        {
+          "preference": "latent_preference_2",
+          "probability": 0.243725
+        }
+      ],
+      "transition_probability": 0.250244,
+      "ranking_weight": 0.199951,
+      "uncertainty": 0.926095
+    },
+    "recommendation": {
+      "item_index": 3,
+      "reason": null,
+      "item_name": "vitamin serum"
+    }
+  },
+  {
+    "user": {
+      "user_index": 17,
+      "display_name": "anonymous_user_17"
+    },
+    "history": [
+      {
+        "item_index": 4,
+        "item_name": "hair shampoo"
+      },
+      {
+        "item_index": 0,
+        "item_name": "skin cleanser"
+      },
+      {
+        "item_index": 1,
+        "item_name": "face cream"
+      },
+      {
+        "item_index": 2,
+        "item_name": "body lotion"
+      }
+    ],
+    "target": {
+      "item_index": 3,
+      "item_name": "vitamin serum"
+    },
+    "top_items": [
+      {
+        "item_index": 3,
+        "item_name": "vitamin serum"
+      },
+      {
+        "item_index": 2,
+        "item_name": "body lotion"
+      },
+      {
+        "item_index": 0,
+        "item_name": "skin cleanser"
+      },
+      {
+        "item_index": 4,
+        "item_name": "hair shampoo"
+      },
+      {
+        "item_index": 1,
+        "item_name": "face cream"
+      }
+    ],
+    "agent_weights": {
+      "long": 0.5,
+      "short": 0.5
+    },
+    "preference_analysis": {
+      "current_top": [
+        {
+          "preference": "latent_preference_2",
+          "probability": 0.712519
+        },
+        {
+          "preference": "latent_preference_3",
+          "probability": 0.223548
+        },
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.036493
+        }
+      ],
+      "predicted_next_top": [
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.354121
+        },
+        {
+          "preference": "latent_preference_1",
+          "probability": 0.318355
+        },
+        {
+          "preference": "latent_preference_2",
+          "probability": 0.243725
+        }
+      ],
+      "transition_probability": 0.250244,
+      "ranking_weight": 0.199951,
+      "uncertainty": 0.926095
+    },
+    "recommendation": {
+      "item_index": 3,
+      "reason": null,
+      "item_name": "vitamin serum"
+    }
+  },
+  {
+    "user": {
+      "user_index": 18,
+      "display_name": "anonymous_user_18"
+    },
+    "history": [
+      {
+        "item_index": 2,
+        "item_name": "body lotion"
+      },
+      {
+        "item_index": 3,
+        "item_name": "vitamin serum"
+      },
+      {
+        "item_index": 4,
+        "item_name": "hair shampoo"
+      },
+      {
+        "item_index": 0,
+        "item_name": "skin cleanser"
+      }
+    ],
+    "target": {
+      "item_index": 1,
+      "item_name": "face cream"
+    },
+    "top_items": [
+      {
+        "item_index": 1,
+        "item_name": "face cream"
+      },
+      {
+        "item_index": 3,
+        "item_name": "vitamin serum"
+      },
+      {
+        "item_index": 0,
+        "item_name": "skin cleanser"
+      },
+      {
+        "item_index": 4,
+        "item_name": "hair shampoo"
+      },
+      {
+        "item_index": 2,
+        "item_name": "body lotion"
+      }
+    ],
+    "agent_weights": {
+      "long": 0.5,
+      "short": 0.5
+    },
+    "preference_analysis": {
+      "current_top": [
+        {
+          "preference": "latent_preference_1",
+          "probability": 0.693758
+        },
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.144288
+        },
+        {
+          "preference": "latent_preference_3",
+          "probability": 0.102216
+        }
+      ],
+      "predicted_next_top": [
+        {
+          "preference": "latent_preference_1",
+          "probability": 0.373378
+        },
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.33132
+        },
+        {
+          "preference": "latent_preference_2",
+          "probability": 0.234111
+        }
+      ],
+      "transition_probability": 0.192749,
+      "ranking_weight": 0.199951,
+      "uncertainty": 0.897869
+    },
+    "recommendation": {
+      "item_index": 1,
+      "reason": null,
+      "item_name": "face cream"
+    }
+  },
+  {
+    "user": {
+      "user_index": 19,
+      "display_name": "anonymous_user_19"
+    },
+    "history": [
+      {
+        "item_index": 0,
+        "item_name": "skin cleanser"
+      },
+      {
+        "item_index": 1,
+        "item_name": "face cream"
+      },
+      {
+        "item_index": 2,
+        "item_name": "body lotion"
+      },
+      {
+        "item_index": 3,
+        "item_name": "vitamin serum"
+      }
+    ],
+    "target": {
+      "item_index": 4,
+      "item_name": "hair shampoo"
+    },
+    "top_items": [
+      {
+        "item_index": 4,
+        "item_name": "hair shampoo"
+      },
+      {
+        "item_index": 2,
+        "item_name": "body lotion"
+      },
+      {
+        "item_index": 0,
+        "item_name": "skin cleanser"
+      },
+      {
+        "item_index": 3,
+        "item_name": "vitamin serum"
+      },
+      {
+        "item_index": 1,
+        "item_name": "face cream"
+      }
+    ],
+    "agent_weights": {
+      "long": 0.5,
+      "short": 0.5
+    },
+    "preference_analysis": {
+      "current_top": [
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.381644
+        },
+        {
+          "preference": "latent_preference_3",
+          "probability": 0.311185
+        },
+        {
+          "preference": "latent_preference_1",
+          "probability": 0.301905
+        }
+      ],
+      "predicted_next_top": [
+        {
+          "preference": "latent_preference_0",
+          "probability": 0.338673
+        },
+        {
+          "preference": "latent_preference_1",
+          "probability": 0.32277
+        },
+        {
+          "preference": "latent_preference_2",
+          "probability": 0.26273
+        }
+      ],
+      "transition_probability": 0.229858,
+      "ranking_weight": 0.199951,
+      "uncertainty": 0.922195
+    },
+    "recommendation": {
+      "item_index": 4,
+      "reason": null,
+      "item_name": "hair shampoo"
+    }
+  }
+]

@@ -1,0 +1,18 @@
+# NVIDIA A100 on a CUDA 12.6-capable driver. Keep this separate from the
+# CUDA 12.8/Blackwell requirements used by RTX PRO 6000.
+--extra-index-url https://download.pytorch.org/whl/cu126
+torch==2.7.1+cu126
+torchvision==0.22.1+cu126
+torchaudio==2.7.1+cu126
+
+# Amazon-Reviews-2023 still uses a Hugging Face dataset loading script.
+# datasets 4.x removed support for such scripts; 3.6.0 is validated here.
+transformers==4.56.1
+datasets==3.6.0
+accelerate==1.10.1
+bitsandbytes>=0.43; platform_system != "Windows"
+numpy>=1.26
+tqdm>=4.66
+matplotlib>=3.8
+protobuf>=3.20.3,<6
+peft==0.17.1

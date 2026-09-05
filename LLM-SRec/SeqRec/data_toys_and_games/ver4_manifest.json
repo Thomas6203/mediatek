@@ -1,0 +1,36 @@
+{
+  "dataset_key": "toys_and_games",
+  "amazon_2023_config": "raw_review_Toys_and_Games",
+  "metadata_config": "raw_meta_Toys_and_Games",
+  "filter": "one-pass raw user>=5 and raw item>=5",
+  "split": "stable chronological leave-two-out; post-filter length<3 is training-only",
+  "statistics": {
+    "num_users": 568262,
+    "evaluation_users": 564666,
+    "num_items": 333160,
+    "train_interactions": 3734374
+  },
+  "split_sha256": "2c046271d2f3366438f4ac30e74cbb1020554c42e10df30cca2bc88ded1d4810",
+  "source_split_sha256": "2c046271d2f3366438f4ac30e74cbb1020554c42e10df30cca2bc88ded1d4810",
+  "protocol": {
+    "seed": 25252,
+    "epochs": 18,
+    "batch_size": 128,
+    "evaluation_batch_size": 64,
+    "max_history": 50,
+    "early_stopping_patience": 6,
+    "selection_metric": "validation ndcg@10",
+    "evaluation": "all eligible users, full catalog, seen-item masking",
+    "max_transitions": 1500000
+  },
+  "source_commit": "b81019ca655fb759cee895924b8b6c7cc0f0cce9",
+  "split_file_sha256": {
+    "train": "f4b82d3c26b7af7b7e9edaba3c8a4742e424d077ff5287518066ec3188c8eff1",
+    "valid": "f69795c6b0a28e2462dad2a0a236864f3b3fb1a8ee6edaa1206f64dd4bc29b7b",
+    "test": "9285dc2ad29b368ffb5ae212ea60191bfb787ec169226d88fd01fa2208ce609c"
+  },
+  "text_metadata_sha256": "58b94695909cc110f3ce0c12892512cbd112b277922e8fdc3eaa901f3a1e26e1",
+  "metadata_items_matched": 333160,
+  "timestamp_interactions_verified": 4863706,
+  "placeholders_only": false
+}

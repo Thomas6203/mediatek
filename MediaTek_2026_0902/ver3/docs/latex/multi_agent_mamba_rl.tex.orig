@@ -1,0 +1,741 @@
+% !TeX program = xelatex
+% Resolve citations and cross-references with: bash build_latex.sh
+\documentclass[11pt,a4paper]{article}
+\usepackage[left=2.5cm,right=2.5cm,top=2.2cm,bottom=2.2cm]{geometry}
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+\setsansfont{Arial}
+\setmonofont{DejaVu Sans Mono}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb,bm}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+\usepackage{fancyhdr}
+\bibliographystyle{plain}
+
+\definecolor{agentblue}{RGB}{43,108,176}
+\definecolor{agentgreen}{RGB}{47,133,90}
+\definecolor{agentorange}{RGB}{194,101,26}
+\definecolor{codegray}{RGB}{247,247,247}
+\definecolor{commentgreen}{RGB}{45,120,70}
+\lstdefinestyle{projectcode}{
+  backgroundcolor=\color{codegray},
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{agentblue}\bfseries,
+  commentstyle=\color{commentgreen},
+  stringstyle=\color{agentorange},
+  breaklines=true,
+  frame=single,
+  rulecolor=\color{black!20},
+  columns=fullflexible,
+  keepspaces=true,
+  showstringspaces=false
+}
+\lstset{style=projectcode}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0.35em}
+\setlist{itemsep=0.2em,topsep=0.35em}
+\renewcommand{\arraystretch}{1.18}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Multi-Agent Mamba-RL Recommender}
+\fancyhead[R]{MediaTek\_2026\_project}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{15pt}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\softmax}{\operatorname{softmax}}
+\newcommand{\sigmoid}{\operatorname{sigmoid}}
+\newcommand{\Project}{\texttt{MediaTek\_2026\_project}}
+
+\title{\textbf{Multi-Agent Mamba-RL for Efficient\\Sequential Recommendation}}
+\author{Zhi-Quan Feng}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Sequential recommendation is naturally connected to reinforcement learning because a recommender repeatedly observes user behavior, selects items, and receives feedback. In practice, however, reinforcement-learning recommenders face three persistent difficulties: user interests evolve at different time scales, logged datasets provide only partial counterfactual evidence, and large language or sequence backbones are expensive to execute inside every policy update. This report presents the independent Multi-Agent Mamba-RL pipeline implemented in \Project. The pipeline fuses cached frozen Mamba-2.8B item-text embeddings with trainable two-layer LightGCN embeddings from the training-only user--item graph, then trains three lightweight agents: a long-term preference agent, a short-term intent agent, and a coordinator agent. Each agent owns a disjoint low-rank adaptation module. The two specialists use Mamba-inspired selective state-space recurrences with different observation horizons and decay time scales, while the coordinator learns user-dependent mixing weights and produces the final ranking policy.
+
+Training follows a deliberately staged procedure: supervised specialist warm-up, frozen-specialist coordinator warm-up, and joint REINFORCE optimization. An optional full-catalog cross-entropy anchor reduces the mismatch between sampled-slate training and complete-catalog evaluation. At inference, the neural score can additionally be calibrated by popularity and first-order transition priors computed only from training histories; their coefficients are selected on validation data and default to zero for backward compatibility. The implementation supports MovieLens, Amazon Reviews 2023, and local Yelp 2019/2023 snapshots; performs chronological leave-two-out splitting; evaluates every user against the complete item catalog; records ranking and throughput metrics; and generates a grounded natural-language reason after recommendation. The architecture separates expensive semantic encoding, high-frequency policy learning, catalog ranking, calibration, and explanation generation. This separation makes the system suitable as a reproducible research baseline for studying multi-agent specialization, selective state dynamics, parameter-efficient policy learning, and high-throughput recommendation.
+\end{abstract}
+
+\section{Introduction}
+
+Recommender systems have traditionally been formulated as rating prediction, click prediction, or next-item ranking problems. These formulations are effective when the objective is immediate relevance, but they do not fully represent the interactive nature of recommendation. A recommendation changes what the user sees, the resulting response changes the observable user state, and that new state influences subsequent recommendations. Reinforcement learning (RL) offers a natural language for this process by representing the recommender as a policy, the user as an environment, and engagement or satisfaction as a reward \cite{RLSURVEY}.
+
+The promise of RL does not make its application straightforward. Industrial recommenders operate over thousands or millions of discrete actions, whereas most deep RL algorithms were developed for much smaller action spaces. Real user exploration is costly, so policies are usually trained from logged data generated by an earlier recommender. Feedback is incomplete: a missing click does not prove that an unseen item was irrelevant. A reward such as click-through rate may also favor immediate attraction even when the intended objective is long-term satisfaction, retention, or diversity. These issues make policy design, reward design, and offline evaluation inseparable parts of an RL recommender.
+
+Sequential user representation creates another challenge. A user can exhibit a stable preference over months while simultaneously pursuing a short-lived intent within the current session. A single recurrent state must decide how quickly to forget old evidence, yet one global time scale is unlikely to fit both behaviors. Transformer recommenders can model long dependencies, but their self-attention cost grows quadratically with sequence length. Selective state-space models such as Mamba instead update a recurrent state in linear time and make the update input-dependent \cite{MAMBA}. This mechanism is attractive for recommendation because an interaction can be selectively retained or forgotten according to its content.
+
+A direct combination of a large Mamba language model and RL would nevertheless be computationally inefficient. If three agents each executed an independent 2.8-billion-parameter model for every sampled action, policy learning would be dominated by repeated text encoding rather than recommendation. Storing three complete adapted backbones would also undermine the parameter-efficiency motivation. The central systems question is therefore not simply whether Mamba can replace a Transformer, but how its semantic and selective-state capabilities can be used without placing a large foundation model inside the high-frequency optimization loop.
+
+This project studies a fundamental question: \emph{Can a shared Mamba semantic space and several low-rank, time-specialized policy agents provide an efficient and interpretable foundation for reinforcement-learning-based sequential recommendation?}
+
+The proposed answer is a three-agent architecture. A frozen Mamba model first converts item metadata into a cached semantic matrix. A long-term agent and a short-term agent process sequences of these vectors with different selective state dynamics. A coordinator observes both specialist states, learns when each one should dominate, and produces the final catalog ranking. The agents are first initialized through supervised next-item learning and are then jointly optimized using policy gradients. This pipeline is implemented independently of the existing deep-learning and single-policy RL baselines, so it can be evaluated without changing their behavior.
+
+\section{Related Works and Innovations}
+
+\subsection{Reinforcement Learning for Recommendation}
+
+Early deep RL recommenders commonly formulated recommendation as a Markov decision process and learned action values or policies from user feedback. DRN used deep Q-learning for news recommendation and explicitly modeled future reward and user return behavior \cite{DRN}. List-wise and page-wise methods expanded the action from a single item to a slate, but this introduced a combinatorial action space. SlateQ addressed this problem by decomposing slate value under assumptions about user choice \cite{SLATEQ}. Policy-gradient methods offered another route: the Top-$K$ off-policy REINFORCE recommender scaled policy learning to a production catalog and corrected bias from logged behavior policies \cite{TOPKREINFORCE}.
+
+These studies establish the reasons to use RL---exploration, delayed effects, and long-term value---but they also expose a gap between research formulations and common offline experiments. Many sequential recommenders use a sampled next-item RL objective even though the evaluation contains no environment transition caused by the recommended action. Recent work showed that part of the apparent benefit can arise because the RL term acts as an auxiliary representation-learning objective rather than because it learns a genuinely long-horizon policy \cite{UNEXPECTEDRL}. A credible implementation must therefore distinguish its current offline objective from claims about online long-term satisfaction.
+
+The present pipeline adopts a conservative interpretation. Its implemented reward is a sampled next-item reward, so it is best understood as a cooperative policy-gradient sequential ranker or contextual-bandit baseline. The code is structured so that the same agent interface can later receive simulator or online rewards, but the current MovieLens, Amazon, and Yelp evaluation does not claim to reconstruct unobserved counterfactual behavior.
+
+\subsection{Mamba and Sequential Recommendation}
+
+Transformer-based sequential recommenders capture rich dependencies but require quadratic attention computation. Mamba introduces input-dependent state-space parameters and linear sequence processing \cite{MAMBA}. Mamba4Rec applied selective state-space modeling to sequential recommendation \cite{MAMBA4REC}, while SIGMA introduced bidirectional and gated mechanisms to improve contextual and short-term modeling \cite{SIGMA}. These results show that Mamba is useful for sequential recommendation, but replacing a Transformer with a standard Mamba block does not solve RL credit assignment, preference time-scale separation, or foundation-model cost.
+
+This project uses Mamba in two distinct roles. The frozen Mamba-2.8B language model provides item semantics from natural-language metadata. Lightweight Mamba-inspired diagonal selective recurrences then provide trainable policy states. This separation preserves linear policy updates without executing the language model at every transition.
+
+The three agents are therefore not three copies of Mamba-2.8B. They share one cached item-semantic space and own separate low-rank updates inside compact selective-state policies. Independent adaptation is retained while memory and computation remain proportional to the small recommendation dimension.
+
+\subsection{Multi-Agent and Multi-Time-Scale Recommendation}
+
+A multi-agent recommender should contain more than several neural modules. Each agent needs a distinct observation, policy, action distribution, reward signal, or functional role. In the proposed architecture, the long-term agent observes up to the full configured history, the short-term agent observes a recent window, and both define separate categorical policies. The coordinator is a third policy that observes specialist states and produces the deployed distribution.
+
+This division reflects the fact that stable preferences and transient intents evolve at different rates. A user may consistently prefer one genre while temporarily searching within another category. A short-term specialist can react quickly, whereas a slowly changing specialist can resist noisy or accidental interactions. The coordinator performs context-dependent arbitration instead of using a fixed average.
+
+LoRA represents an update with two low-rank matrices while leaving the base path unchanged \cite{LORA}. Giving each agent its own LoRA parameters creates separate adaptation subspaces at a small cost. Zero-initializing the second matrix makes every adapter begin as a no-op and stabilizes staged training.
+
+\subsection{Why This Topic Must Be Investigated}
+
+Scientifically, the topic tests whether multi-agent specialization is more than extra parameter count. If long- and short-term agents receive identical inputs and objectives, they may collapse to nearly identical policies. A useful architecture must create structural differences through observation horizon, state time scale, and independent policy feedback, then verify these choices through ablation.
+
+The topic also clarifies what Mamba contributes. A pretrained Mamba can supply textual knowledge, but repeatedly invoking it inside RL may erase any throughput advantage. A tiny recurrent model is efficient but may fail to exploit item metadata. Separating semantic precomputation from selective policy-state updates provides a testable middle ground.
+
+Catalog ranking must also remain practical. Training over the full catalog at every step is expensive, while sampled-negative evaluation can exaggerate quality. This pipeline samples small slates for policy-gradient actions, optionally anchors supervised learning against the full catalog, and always evaluates by matrix multiplication against the complete catalog. It reports users per second and user--item scores per second so that efficiency is measurable.
+
+Finally, explanation generation should not dominate ranking latency. The pipeline performs retrieval first and loads the generator only after evaluation. This creates a clear boundary between the policy and its post-hoc verbalization.
+
+\subsection{Innovations and Contributions}
+
+The implementation makes six contributions:
+\begin{enumerate}
+  \item A cooperative three-agent recommender with structurally different long- and short-term selective-state specialists and a learned coordinator.
+  \item Disjoint LoRA parameters for every agent with shared cached Mamba semantics, avoiding three copies or forward passes of the 2.8B backbone.
+  \item Three-stage optimization separating specialist learning, coordinator calibration, and joint policy-gradient adaptation, with an optional full-catalog cross-entropy anchor.
+  \item Leakage-controlled catalog calibration combining the neural policy with training-only popularity and first-order transition statistics.
+  \item A unified MovieLens, Amazon Reviews 2023, and Yelp 2019/2023 evaluation interface with chronological splitting, periodic validation, best-checkpoint restoration, and full-catalog ranking.
+  \item Explanation generation isolated from ranking, with learned agent weights included in qualitative output.
+\end{enumerate}
+
+\input{baselines_section}
+
+\section{Method}
+
+\subsection{Problem Formulation}
+
+Let $\mathcal U$ be users and $\mathcal I$ the catalog, with $N=|\mathcal I|$. User interactions are ordered:
+\begin{equation}
+  \mathcal H_u=(i_1,i_2,\ldots,i_{T_u}).
+\end{equation}
+At transition $t$, the state is prefix $s_t=(i_1,\ldots,i_t)$ and logged next item $i_{t+1}$ is positive. The policies are
+\begin{equation}
+  \pi_L(a\mid s_L),\qquad
+  \pi_S(a\mid s_S),\qquad
+  \pi_C(a\mid s_L,s_S).
+\end{equation}
+
+\subsection{Pipeline Overview}
+
+\begin{figure}[H]
+\centering
+\resizebox{0.92\textwidth}{!}{%
+\begin{tikzpicture}[
+  box/.style={draw,rounded corners=2pt,align=center,minimum height=10mm,
+              minimum width=39mm,fill=black!3,font=\small},
+  shared/.style={box,minimum width=92mm,fill=black!6},
+  agent/.style={box,minimum width=48mm,minimum height=14mm},
+  coordinator/.style={box,minimum width=64mm,minimum height=14mm,
+                      draw=agentorange,very thick,fill=agentorange!10},
+  arrow/.style={-{Latex[length=2.3mm]},thick},
+  feedback/.style={-{Latex[length=2.3mm]},thick,dashed,draw=red!70!black},
+  level/.style={font=\footnotesize\bfseries,text=black!55,anchor=east}
+]
+% Shared observation and representation layer.
+\node[box,minimum width=66mm] (data) at (0,0)
+  {Interaction history and item metadata\\MovieLens, Amazon, or Yelp};
+\node[shared] (semantic) at (0,-1.55)
+  {\textbf{Shared hybrid item layer}\\
+   cached frozen Mamba-2.8B semantics + training-only two-layer LightGCN\\
+   normalized semantic--collaborative item matrix $E\in\R^{N\times d}$};
+
+% Parallel specialist level.
+\node[agent,draw=agentblue,very thick,fill=agentblue!8] (long) at (-3.25,-3.45)
+  {\textbf{Long-term specialist $\pi_L$}\\
+   full history $\rightarrow$ slow LoRA selective SSM\\
+   stable preference $\bm s_u^{(L)}$, logits $\bm z^{(L)}$};
+\node[agent,draw=agentgreen,very thick,fill=agentgreen!8] (short) at (3.25,-3.45)
+  {\textbf{Short-term specialist $\pi_S$}\\
+   recent window $\rightarrow$ fast LoRA selective SSM\\
+   current intent $\bm s_u^{(S)}$, logits $\bm z^{(S)}$};
+
+% Higher-level coordination and the deployed action.
+\node[coordinator] (coord) at (0,-5.45)
+  {\textbf{Higher-level coordinator $\pi_C$}\\
+   agent-specific LoRA + state-dependent weights $(w_L,w_S)$\\
+   cooperative fusion of specialist states and logits};
+\node[box,minimum width=64mm,fill=agentorange!5] (rank) at (0,-7.15)
+  {Joint recommendation policy\\
+   $\bm z^{\mathrm{final}}=\bm z^{(C)}+w_L\bm z^{(L)}+w_S\bm z^{(S)}$};
+\node[box,minimum width=55mm] (catalog) at (0,-8.65)
+  {Training-only prior calibration + Top-$K$\\
+   $\widetilde z=z^{\mathrm{final}}+\alpha p+\beta q$; Recall/NDCG};
+\node[box,minimum width=46mm] (reason) at (5.7,-8.65)
+  {Post-hoc Mamba reason\\grounded in history};
+% \node[box,minimum width=47mm,draw=red!70!black,fill=red!4] (objective) at (-4.7,-6.65)
+%   {Joint training objective\\REINFORCE + CE + specialization};
+
+% Inference path.
+\draw[arrow] (data)--(semantic);
+\draw[arrow] (semantic.south) -- ++(0,-0.35) -| (long.north);
+\draw[arrow] (semantic.south) -- ++(0,-0.35) -| (short.north);
+\draw[arrow] (long.south) -- ++(0,-0.35) -| node[pos=0.72,above left,font=\scriptsize]
+  {$\bm s^{(L)},\bm z^{(L)}$} (coord.north);
+\draw[arrow] (short.south) -- ++(0,-0.35) -| node[pos=0.72,above right,font=\scriptsize]
+  {$\bm s^{(S)},\bm z^{(S)}$} (coord.north);
+\draw[arrow] (coord)--(rank);
+\draw[arrow] (rank)--(catalog);
+\draw[arrow] (catalog)--(reason);
+
+% Training-only cooperative feedback.
+% \draw[feedback] (objective.north) to[bend right=16] (long.west);
+% \draw[feedback] (objective.north east) to[bend right=12] (coord.west);
+% \draw[feedback] (objective.north east) to[bend left=25] (short.west);
+
+% Explicit hierarchy labels.
+\node[level] at (-6.65,-1.55) {Shared representation};
+\node[level] at (-6.65,-3.45) {Specialist agents};
+\node[level] at (-6.65,-5.45) {Coordination};
+\node[level] at (-6.65,-8.65) {Decision and output};
+\end{tikzpicture}}
+\caption{Hierarchical cooperative Multi-Agent Mamba-RL architecture. Solid arrows
+show the inference path; dashed red arrows show training-only policy feedback.}
+\label{fig:pipeline}
+\end{figure}
+
+The hierarchy assigns complementary responsibilities rather than making three
+agents vote independently. The two specialist policies extract preferences at
+different time scales, and the higher-level coordinator decides their
+state-dependent contribution to one deployed recommendation policy. During joint
+training, the coordinator and both specialists receive policy-gradient signals;
+during inference, only the solid forward path is executed.
+
+\subsection{Data and Chronological Splitting}
+
+Every record becomes $(u,i,\tau,t_i)$: user, item, timestamp, and item text. IDs become contiguous integers. Users need at least five positive events by default. MovieLens and Yelp use rating at least four.
+
+\begin{longtable}{p{0.24\textwidth}p{0.27\textwidth}p{0.41\textwidth}}
+\caption{Dataset interfaces and item text.}\label{tab:data}\\
+\toprule
+Argument & Interactions & Item text\\
+\midrule
+\endfirsthead
+\toprule
+Argument & Interactions & Item text\\
+\midrule
+\endhead
+movielens & ratings & title and genres\\
+amazon-\textless category\textgreater & Amazon Reviews 2023 & title, category, features, description\\
+amazon:\textless exact-config\textgreater & exact HF config & review/meta join by \texttt{parent\_asin}\\
+yelp19, yelp23 & local Yelp JSON/table & name, categories, location, attributes\\
+synthetic & deterministic events & short names for tests\\
+\bottomrule
+\end{longtable}
+
+Yelp is license-gated and requires a local path. Leave-two-out splitting is
+\begin{align}
+  \mathcal H_u^{\mathrm{train}}&=(i_1,\ldots,i_{T_u-2}),\\
+  i_u^{\mathrm{valid}}&=i_{T_u-1},\\
+  i_u^{\mathrm{test}}&=i_{T_u}.
+\end{align}
+Training prefixes produce $\big((i_1,\ldots,i_k),i_{k+1}\big)$. Reservoir sampling caps transitions at \texttt{MAX\_TRANSITIONS}.
+
+\subsection{Cached Mamba Semantics}
+
+Frozen Mamba-2.8B encodes metadata:
+\begin{equation}
+  \bm e_i^{\mathrm{text}}
+  =
+  \operatorname{MeanPool}
+  \left(\operatorname{Mamba}_{\mathrm{frozen}}(t_i)\right)
+  \in\R^{d_m}.
+\end{equation}
+A dataset/item/text fingerprint controls cache reuse. A shared bridge gives
+\begin{equation}
+  \bm e_i=\operatorname{norm}(W_p\bm e_i^{\mathrm{text}}),
+  \qquad W_p\in\R^{d\times d_m},\quad d=128.
+\end{equation}
+
+\subsection{Training-Only LightGCN Fusion}
+
+The current implementation enables a two-layer LightGCN branch by default
+\cite{LIGHTGCN}. It constructs an undirected bipartite graph only from unique
+user--item pairs in \texttt{train\_by\_user}; validation and test edges are
+excluded. Let $A$ be its adjacency matrix, $D$ its degree matrix, and
+$X^{(0)}\in\R^{(|\mathcal U|+|\mathcal I|)\times d}$ trainable node embeddings.
+The code performs symmetric normalized propagation without feature transforms
+or nonlinearities:
+\begin{align}
+  X^{(\ell+1)} &= D^{-1/2}AD^{-1/2}X^{(\ell)},\qquad \ell\in\{0,1\},\\
+  \bar X &= \frac{1}{3}\sum_{\ell=0}^{2}X^{(\ell)}.
+\end{align}
+Writing $\bm e_i^{\mathrm{gcn}}$ for item $i$'s row of $\bar X$, the actual
+vector consumed by both specialists and by catalog scoring is
+\begin{equation}
+  \bm e_i=operatorname{norm}\!\left(
+    \operatorname{norm}(W_p\bm e_i^{\mathrm{text}})+
+    \operatorname{norm}(\bm e_i^{\mathrm{gcn}})
+  \right).
+\end{equation}
+Thus the graph is a shared collaborative item encoder, not a fourth policy
+agent. It is optimized with the item projection during specialist warm-up and
+joint training, frozen during coordinator warm-up, and recomputed once per
+batch for reuse by histories and candidates. The optional
+\texttt{--graph-device} places graph parameters and edges on a second GPU;
+\texttt{--no-use-graph-embeddings} provides the semantic-only ablation.
+
+\subsection{Agent-Specific LoRA}
+
+For input $\bm x$, agent $j$ owns
+\begin{equation}
+  \operatorname{LoRA}_j(\bm x)
+  =
+  \frac{\alpha}{r}B_jA_j\operatorname{Dropout}(\bm x).
+\end{equation}
+Defaults are $r=8$, $\alpha=16$, and dropout $0.05$. $A_j$ uses Kaiming initialization and $B_j$ starts at zero. Specialists own candidate, delta, gate, and output adapters; the coordinator owns state, mixture, and score adapters.
+
+\subsection{Selective-State Specialists}
+
+For $j\in\{L,S\}$:
+\begin{align}
+  \bm\delta_t^{(j)}
+  &=
+  \operatorname{softplus}
+  \left(\bm b_\delta^{(j)}+\operatorname{LoRA}^{(j)}_\delta(\bm x_t)\right),\\
+  \bm a_t^{(j)}&=\exp(-\bm\delta_t^{(j)}),\\
+  \widetilde{\bm h}_t^{(j)}
+  &=
+  \tanh\left(\bm x_t+\operatorname{LoRA}^{(j)}_{\mathrm{candidate}}(\bm x_t)\right),\\
+  \bm h_t^{(j)}
+  &=
+  \bm a_t^{(j)}\odot\bm h_{t-1}^{(j)}
+  +(1-\bm a_t^{(j)})\odot\widetilde{\bm h}_t^{(j)},\\
+  \bm g_t^{(j)}
+  &=
+  \sigmoid\left(\operatorname{LoRA}^{(j)}_{\mathrm{gate}}(\bm x_t)\right),\\
+  \bm o_t^{(j)}
+  &=
+  \bm g_t^{(j)}\odot\bm h_t^{(j)}
+  +(1-\bm g_t^{(j)})\odot\bm x_t.
+\end{align}
+Small $\bm\delta_t$ preserves history; large values adopt the current item. Long sees up to 100 events at initial time scale $0.08$; short sees 10 at $0.5$. Logits are
+\begin{equation}
+  z_i^{(j)}=\exp(\tau_j)\langle\bm s_u^{(j)},\bm e_i\rangle.
+\end{equation}
+
+\subsection{Coordinator}
+
+\begin{align}
+  \bm q_u&=[\bm s_u^{(L)};\bm s_u^{(S)}],\\
+  [w_L,w_S]&=\softmax(\operatorname{LoRA}_{\mathrm{mix}}(\bm q_u)),\\
+  \bm s_u^{(C)}
+  &=
+  \operatorname{norm}\left(
+  w_L\bm s_u^{(L)}+w_S\bm s_u^{(S)}
+  +\operatorname{LoRA}_{\mathrm{state}}(\bm q_u)\right),\\
+  z_i^{\mathrm{final}}&=z_i^{(C)}+w_Lz_i^{(L)}+w_Sz_i^{(S)}.
+\end{align}
+
+\subsection{Training-Only Catalog Calibration}
+
+The neural coordinator can be augmented by two deterministic catalog priors.
+They are estimated strictly from $\mathcal H_u^{\mathrm{train}}$ and therefore
+introduce no validation or test interactions into the feature construction.
+Let $c_i$ be the number of occurrences of item $i$ in all training histories.
+The standardized log-popularity feature is
+\begin{equation}
+  p_i=
+  \frac{\log(1+c_i)-\mu_p}{\max(\sigma_p,10^{-6})}.
+\end{equation}
+For adjacent training events, let $n_{a,b}$ count transitions from item $a$ to
+item $b$ and define
+\begin{equation}
+  q_{a,b}=\log(1+n_{a,b}).
+\end{equation}
+If $\ell_u$ is the last observed item in the inference history, the deployed
+full-catalog score is
+\begin{equation}
+  \widetilde z_{u,i}
+  =
+  z_{u,i}^{\mathrm{final}}
+  +\alpha p_i
+  +\beta q_{\ell_u,i},
+  \qquad q_{\ell_u,i}=0\ \text{for unseen transitions}.
+\end{equation}
+Seen non-target items are masked after calibration. The coefficients $\alpha$
+and $\beta$ are selected using validation ranking only; the held-out test set
+is evaluated once after the choice is fixed. A negative $\alpha$ suppresses
+over-popular items, while a positive $\beta$ reinforces locally plausible
+next-item transitions. This module is not a fourth RL agent and does not update
+model weights. Both coefficients default to zero, so existing runs retain the
+original neural ranking exactly.
+
+\section{Training Strategy}
+
+\subsection{Stage 1: Specialist Warm-Up}
+
+A sampled slate is $\mathcal C=\{i^+,i_1^-,\ldots,i_{K-1}^-\}$,
+where $K$ is configurable and defaults to 64. The coordinator is frozen:
+\begin{equation}
+  \mathcal L_{\mathrm{specialist}}
+  =
+  \operatorname{CE}(\bm z^{(L)},y)
+  +\operatorname{CE}(\bm z^{(S)},y).
+\end{equation}
+In sampled mode, $y=0$ because the positive item is placed first. With
+\texttt{--full-catalog-supervised}, both specialist logit vectors contain all
+$N$ items and $y=i^+$. This option removes negative-sampling noise during the
+warm-up at the cost of a larger matrix multiplication.
+
+\subsection{Stage 2: Coordinator Warm-Up}
+
+Specialists and projection are frozen:
+\begin{equation}
+  \mathcal L_{\mathrm{coord}}
+  =
+  \operatorname{CE}(\bm z^{\mathrm{final}},y).
+\end{equation}
+The target convention follows Stage 1: $y=0$ for a sampled slate and $y=i^+$
+for full-catalog supervision.
+
+\subsection{Stage 3: Joint REINFORCE}
+
+Each policy forms $\pi_j(a\mid s)=\softmax(\bm z^{(j)})_a$ and samples an action:
+\begin{equation}
+  r_j=
+  \begin{cases}
+    1,&a_j=0,\\
+    -0.05,&a_j\neq0.
+  \end{cases}
+\end{equation}
+Baselines use $b_j\leftarrow0.95b_j+0.05\overline r_j$ and $A_j=r_j-b_j$. The policy loss is
+\begin{equation}
+  \mathcal L_{\mathrm{PG}}
+  =
+  -\sum_j\mathbb E[A_j\log\pi_j(a_j\mid s)]
+  -0.01\sum_j\mathbb E[H(\pi_j)].
+\end{equation}
+Advantage is detached. Additional terms are
+\begin{align}
+  \mathcal L_{\mathrm{sup}}
+  &=
+  \frac13\sum_{j\in\{L,S,C\}}\operatorname{CE}(\bm z^{(j)},y),\\
+  \mathcal L_{\mathrm{spec}}
+  &=
+  \operatorname{cos}^2(\bm s_u^{(L)},\bm s_u^{(S)}),\\
+  \mathcal L_{\mathrm{joint}}
+  &=
+  \mathcal L_{\mathrm{PG}}
+  +\lambda_{\mathrm{sup}}\mathcal L_{\mathrm{sup}}
+  +\lambda_{\mathrm{spec}}\mathcal L_{\mathrm{spec}}.
+\end{align}
+The defaults are $\lambda_{\mathrm{sup}}=0.1$ and
+$\lambda_{\mathrm{spec}}=0.01$. Joint REINFORCE actions are still sampled
+from the configured slate. When full-catalog supervision is enabled, a second
+catalog projection computes $\mathcal L_{\mathrm{sup}}$ over all $N$ items;
+otherwise the auxiliary cross-entropy uses the sampled slate. Thus the policy
+gradient remains inexpensive while the supervised anchor can be aligned with
+the evaluation action space.
+
+\subsection{Gradients and Optimization}
+
+Coordinator gradients flow through fusion into both specialist LoRA paths. Each specialist also receives its own policy loss. This is cooperative local credit rather than a centralized counterfactual critic.
+
+\begin{table}[H]
+\centering
+\caption{Default optimization.}
+\begin{tabular}{lcl}
+\toprule
+Stage & Learning rate & Trainable components\\
+\midrule
+Specialists & $2\times10^{-4}$ & long, short, projection\\
+Coordinator & $2\times10^{-4}$ & coordinator\\
+Joint RL & $5\times10^{-5}$ & all components\\
+\bottomrule
+\end{tabular}
+\end{table}
+AdamW uses weight decay $10^{-5}$. CUDA uses FP16 autocast, GradScaler, and gradient clipping at 1.0. Validation runs every 1,000 optimizer steps by default. A \texttt{ReduceLROnPlateau} scheduler halves the coordinator or joint learning rate after a configurable number of non-improving checks, and joint training supports early stopping. Each improvement is atomically saved as \texttt{best\_validation.pt}; final metrics are computed only after restoring that validation-selected state.
+
+\section{Full-Catalog Evaluation and Throughput}
+
+Evaluation always projects the complete catalog once, irrespective of whether
+training used sampled or full-catalog supervision:
+\begin{equation}
+  E=W_pE_{\mathrm{text}}\in\R^{N\times d},
+  \qquad Z^{\mathrm{neural}}=SE^\top\in\R^{B\times N}.
+\end{equation}
+This GEMM avoids a $B\times N\times d$ expansion. Optional popularity and
+transition vectors are then added by broadcasting and sparse row updates to
+obtain $\widetilde Z$; they do not require another model forward pass. Seen
+non-target items receive $-\infty$.
+
+\begin{align}
+  \operatorname{rank}_u
+  &=\sum_{i=1}^N\mathbb{I}[\widetilde z_{u,i}\geq
+    \widetilde z_{u,i^+}],\\
+  \operatorname{Recall@K}
+  &=\frac1{|\mathcal U|}\sum_u\mathbb{I}[\operatorname{rank}_u\leq K],\\
+  \operatorname{NDCG@K}
+  &=\frac1{|\mathcal U|}\sum_u
+  \frac{\mathbb{I}[\operatorname{rank}_u\leq K]}
+       {\log_2(\operatorname{rank}_u+1)}.
+\end{align}
+The code reports $K=5,10$, users/s, and scores/s.
+
+Throughput comes from cached Mamba vectors, shared semantics, linear recurrences, capped history, sampled RL action slates, optional batched full-catalog CE, FP16, bounded transitions, GEMM ranking, sparse prior updates, and delayed generator loading.
+
+\section{Recommendation Explanation}
+
+For sampled test users, Top-1, ten recent item texts, and coordinator weights form:
+\begin{lstlisting}[language={}]
+Explain this recommendation in one concise sentence using only the supplied history.
+Long-term agent weight=<wL>; short-term agent weight=<wS>.
+History: <recent item texts>.
+Recommended item: <recommended item text>. Reason:
+\end{lstlisting}
+Mamba greedily generates at most 40 tokens after ranking. The explanation is grounded but post-hoc; it is not a causal proof and does not affect reward.
+
+\section{Experimental Design}
+
+Required ablations include single versus three agents, identical versus 100/10
+windows, fixed versus learned fusion, direct joint RL versus staged training,
+sampled versus full-catalog supervised anchoring, and removal of specialization.
+Catalog calibration must be ablated as neural-only, popularity-only,
+transition-only, and combined scoring, with $\alpha$ and $\beta$ selected on
+validation for every dataset. Semantic features should compare Mamba vectors,
+random vectors, and ID embeddings. Sequence baselines should include GRU and
+Transformer under matched capacity. Random negatives should be compared with
+hard negatives.
+
+Beyond Recall/NDCG, useful measures include coverage, novelty, diversity,
+results by history length, coordinator-weight distribution, specialist-state
+cosine similarity, transitions/s, users/s, scores/s, peak GPU memory, and
+explanation latency. Because the priors can change exposure concentration,
+coverage and popularity-stratified Recall should accompany aggregate Recall.
+
+\subsection{Amazon All Beauty Iterative Study}
+
+The implemented changes were tested on the Amazon Reviews 2023 All Beauty
+5-core split with 1,620 users, 6,982 items, 11,744 training interactions,
+chronological leave-two-out splitting, and full-catalog evaluation. Table
+\ref{tab:amazon-iterations} reports the held-out results recorded by the
+training pipeline.
+
+\begin{table}[H]
+\centering
+\caption{Iterative Amazon All Beauty results. Rounds are an engineering
+sequence rather than independent causal ablations.}
+\label{tab:amazon-iterations}
+\begin{tabularx}{\textwidth}{cXcc}
+\toprule
+Round & Main change & Valid Recall@10 & Test Recall@10\\
+\midrule
+1 & Sampled-slate baseline & 0.11173 & 0.13519\\
+2 & Full-catalog CE warm-up and joint CE anchor & 0.11481 & 0.13827\\
+3 & Continued joint RL from the Round-2 checkpoint & 0.11605 & 0.13395\\
+4 & Frozen Round-2 neural checkpoint plus training-only calibrated priors &
+0.13086 & \textbf{0.15432}\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Round 2 changes the supervised action space and Round 4 changes the deployed
+scoring rule, so these are algorithmic modifications rather than only different
+hyperparameters. For Round 4, validation selected $\alpha=-0.25$ and
+$\beta=4.0$. The neural checkpoint was not updated, and the test set remained
+held out until the coefficients were fixed. The resulting Test Recall@10 of
+0.15432 exceeded the predefined target of 0.15. This comparison does not by
+itself isolate causal contributions; the prior components and the full-catalog
+anchor should still be reported as separate controlled ablations.
+
+\subsection{MovieLens-1M and Yelp19 Held-Out Results}
+
+Table~\ref{tab:ml-yelp-project} records the selected best-validation checkpoints
+already produced by this repository. Both runs use rating $\geq4$,
+chronological leave-two-out, one test target per user, and full-catalog ranking;
+therefore Recall and Hit Ratio coincide. LightGCN is enabled and its edges, as
+well as the popularity and transition calibration statistics, come only from
+training histories. These rows are directly comparable to each other only at a
+metric-definition level: the catalogs and calibrated coefficients differ.
+
+\begin{table}[H]
+\centering
+\caption{Current project full-catalog test results.}
+\label{tab:ml-yelp-project}
+\begin{tabular}{@{}llrrrr@{}}
+\toprule
+Dataset & Run & $R@5$ & $R@10$ & $N@5$ & $N@10$ \\
+\midrule
+MovieLens-1M & 20260827\_011510 & .14899 & .21793 & .10257 & .12476 \\
+Yelp19 & 20260827\_030443 & .06940 & .09685 & .04656 & .05545 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The published tables in Section~\ref{sec:baselines} remain contextual
+references rather than evidence of superiority because AMIM and Yelp2018 use
+different preprocessing and, in Yelp's case, a different corpus and cutoff.
+
+\section{Implementation and Reproducibility}
+
+\begin{table}[H]
+\centering
+\caption{Independent implementation files.}
+\begin{tabularx}{\textwidth}{>{\ttfamily}p{0.34\textwidth}X}
+\toprule
+File & Responsibility\\
+\midrule
+run\_mamba\_rl.sh & launcher\\
+src/data\_mamba\_rl.py & dataset adapters\\
+src/model\_mamba\_rl.py & agents and LoRA\\
+src/train\_mamba\_rl.py & training, evaluation, explanations\\
+tests/test\_mamba\_rl.py & tests\\
+outputs\_mamba\_rl/ & artifacts\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{lstlisting}[language=bash]
+bash run_mamba_rl.sh movielens-1m 0
+bash run_mamba_rl.sh movielens-20m 0
+bash run_mamba_rl.sh amazon-all-beauty 0
+bash run_mamba_rl.sh amazon-movies-and-tv 0
+bash run_mamba_rl.sh yelp19 0 /data/yelp-2019
+bash run_mamba_rl.sh yelp23 0 /data/yelp-2023
+\end{lstlisting}
+
+Environment variables include \texttt{CACHE\_DIR},
+\texttt{BATCH\_SIZE}, \texttt{EVAL\_BATCH\_SIZE},
+\texttt{SPECIALIST\_EPOCHS}, \texttt{COORDINATOR\_EPOCHS},
+\texttt{RL\_EPOCHS}, \texttt{VALIDATE\_EVERY\_STEPS},
+\texttt{MONITOR\_METRIC}, \texttt{EARLY\_STOPPING\_PATIENCE},
+\texttt{LR\_PATIENCE}, \texttt{MAX\_TRANSITIONS}, \texttt{SEED},
+\texttt{POPULARITY\_ALPHA}, \texttt{TRANSITION\_BETA},
+\texttt{USE\_GRAPH\_EMBEDDINGS}, \texttt{GRAPH\_DEVICE},
+\texttt{TARGET\_RECALL\_AT\_10}, \texttt{EXPERIMENT\_NOTE}, and
+\texttt{RESUME\_CHECKPOINT}. The Round-4 evaluation can be reproduced with
+\begin{lstlisting}[language=bash]
+SPECIALIST_EPOCHS=0 COORDINATOR_EPOCHS=0 RL_EPOCHS=0 \
+POPULARITY_ALPHA=-0.25 TRANSITION_BETA=4.0 \
+MONITOR_METRIC=recall@10 \
+RESUME_CHECKPOINT=outputs_mamba_rl/amazon-all-beauty/\
+20260826_155853/multi_agent_lora.pt \
+bash run_mamba_rl.sh amazon-all-beauty 0
+\end{lstlisting}
+A CPU smoke test is
+\begin{lstlisting}[language=bash]
+python -m src.train_mamba_rl \
+  --dataset synthetic --device cpu --skip-mamba \
+  --no-generate-reasons --max-transitions 32 --batch-size 8
+\end{lstlisting}
+
+Outputs are \texttt{train\_<run-id>.log},
+\texttt{best\_validation.pt}, \texttt{multi\_agent\_lora.pt},
+\texttt{loss.png}, \texttt{metrics.json}, and
+\texttt{recommendations.json} under
+\texttt{outputs\_mamba\_rl/<dataset>/<run-id>/}. Every log begins with
+\texttt{EXPERIMENT\_NOTE} and the complete serialized
+\texttt{EXPERIMENT\_CONFIG}; calibrated runs additionally record
+\texttt{CATALOG\_PRIORS}, vector provenance, resumed checkpoint,
+\texttt{VALID\_BEST}, \texttt{TEST\_FINAL}, and
+\texttt{TARGET\_RESULT}. Legacy training paths do not import this pipeline.
+
+\section{Limitations}
+
+\begin{enumerate}
+  \item The $+1/-0.05$ next-item reward is not online feedback from the learned policy.
+  \item Static logs contain no action-dependent user transition, so this is not a complete long-horizon MDP.
+  \item Random negatives may be unexposed; no propensity correction is used.
+  \item Credit assignment uses local rewards rather than a centralized critic.
+  \item REINFORCE still samples slates; full-catalog CE reduces but does not remove the policy-gradient/evaluation mismatch.
+  \item Popularity and first-order transition counts are simple, dataset-dependent priors and may not transfer across domains or temporal shifts.
+  \item Calibrated gains must be separated from gains in the learned neural policy; the priors are deterministic post-training score corrections.
+  \item Explanations are post-hoc and not optimized for faithfulness.
+  \item Mamba-2.8B supplies semantics; agents use compact Mamba-inspired recurrences rather than three full 2.8B adapters.
+\end{enumerate}
+
+Recall/NDCG gains therefore mean improved offline ranking, not proven long-term satisfaction.
+
+\section{Future Research}
+
+Reward-adaptive memory can use
+\begin{equation}
+  \bm\delta_t=f_\theta(\bm x_t,r_{t-1},\sigma_{t-1}).
+\end{equation}
+Offline RL can add propensity weighting or
+\begin{equation}
+  \mathcal L_{\mathrm{CQL}}
+  =
+  \log\sum_a\exp Q(s,a)-Q(s,a_{\mathrm{logged}}).
+\end{equation}
+A simulator can support centralized critics and retention reward. Item selection and reasoning can be jointly optimized with
+\begin{equation}
+  r=
+  \lambda_1r_{\mathrm{rank}}
+  +\lambda_2r_{\mathrm{grounding}}
+  +\lambda_3r_{\mathrm{consistency}}
+  +\lambda_4r_{\mathrm{diversity}}.
+\end{equation}
+
+\section{Conclusion}
+
+The pipeline combines Mamba item semantics, linear selective-state modeling,
+agent-specific LoRA, and policy gradients without placing three large models in
+the RL loop. Mamba-2.8B establishes a reusable semantic catalog; long and short
+agents model different time scales; and a coordinator learns context-dependent
+fusion. Staged training establishes specialists, calibrates coordination, and
+performs joint adaptation, while optional full-catalog CE aligns the supervised
+anchor with the evaluation action space. Training-only popularity and transition
+priors provide a leakage-controlled calibration layer whose effect remains
+explicitly separable from learned model quality. Periodic validation,
+best-checkpoint restoration, auditable experiment logs, full-catalog evaluation,
+and isolated explanation generation make ranking quality and systems cost
+measurable.
+
+\begin{thebibliography}{99}
+\bibitem{LORA} E. Hu, Y. Shen, P. Wallis, et al. LoRA: Low-Rank Adaptation of Large Language Models. \emph{ICLR}, 2022.
+\bibitem{MAMBA} A. Gu and T. Dao. Mamba: Linear-Time Sequence Modeling with Selective State Spaces. \emph{COLM}, 2024.
+\bibitem{RLSURVEY} M. M. Afsar, T. Crump, and B. Far. Reinforcement Learning Based Recommender Systems: A Survey. \emph{ACM Computing Surveys}, 2022.
+\bibitem{DRN} G. Zheng, F. Zhang, Z. Zheng, et al. DRN: A Deep Reinforcement Learning Framework for News Recommendation. \emph{The Web Conference}, 2018.
+\bibitem{TOPKREINFORCE} M. Chen, A. Beutel, P. Covington, et al. Top-K Off-Policy Correction for a REINFORCE Recommender System. \emph{WSDM}, 2019.
+\bibitem{SLATEQ} E. Ie, V. Jain, J. Wang, et al. Reinforcement Learning for Slate-Based Recommender Systems. \emph{arXiv:1905.12767}, 2019.
+\bibitem{UNEXPECTEDRL} A. L. Silva, D. Parra, and R. T. Icarte. On the Unexpected Effectiveness of Reinforcement Learning for Sequential Recommendation. \emph{ICML}, 2024.
+\bibitem{MAMBA4REC} C. Liu, J. Lin, J. Wang, et al. Mamba4Rec: Towards Efficient Sequential Recommendation with Selective State Space Models. \emph{arXiv:2403.03900}, 2024.
+\bibitem{SIGMA} Z. Liu, Q. Liu, Y. Wang, et al. SIGMA: Selective Gated Mamba for Sequential Recommendation. \emph{AAAI}, 2025.
+\bibitem{RESID} Y. Liang, Z. Zhang, Y. Zhu, et al. Rethinking Generative Recommender Tokenizer: Recsys-Native Encoding and Semantic Quantization Beyond LLMs. \emph{arXiv:2602.02338}, 2026.
+\bibitem{IDIOMOE} R. Shirkavand, X. Wei, C. Wang, et al. Catalog-Native LLM: Speaking Item-ID Dialect with Less Entanglement for Recommendation. \emph{ICLR}, 2026.
+\bibitem{BLAIR} Y. Hou, J. Li, X. Fu, et al. Bridging Language and Items for Retrieval and Recommendation: Benchmarking LLMs as Semantic Encoders. \emph{arXiv:2403.03952v2}, 2026.
+\bibitem{MARS} H. Kim, J. Kim, M. Choi, S. Lee, and J. Lee. MARS: Matching Attribute-aware Representations for Text-based Sequential Recommendation. \emph{CIKM}, 2024.
+\bibitem{HM2REC} Y. Liu, L. Qi, X. Mao, et al. Hyperbolic-Enhanced Mixture-of-Experts Mamba for Sequential Recommendation. \emph{AAAI}, 2026.
+\bibitem{MQSATED} T. Zhu, Y. Shi, Y. Zhang, Y. Wu, F. Mo, and J.-Y. Nie. Collaboration and Transition: Distilling Item Transitions into Multi-Query Self-Attention for Sequential Recommendation. \emph{WSDM}, 2024.
+\bibitem{DUOREC} R. Qiu, Z. Huang, H. Yin, and Z. Wang. Contrastive Learning for Representation Degeneration Problem in Sequential Recommendation. \emph{WSDM}, 2022.
+\bibitem{FMLPREC} K. Zhou, H. Yu, W. X. Zhao, and J. R. Wen. Filter-Enhanced MLP Is All You Need for Sequential Recommendation. \emph{The Web Conference}, 2022.
+\bibitem{JGCF} J. Guo, L. Du, X. Chen, et al. On Manipulating Signals of User--Item Graph: A Jacobi Polynomial-Based Graph Collaborative Filtering. \emph{KDD}, 2023.
+\bibitem{FASHIONRETRIEVAL} M. Pandey. Domain-Adaptive and Scalable Dense Retrieval for Content-Based Recommendation. \emph{arXiv:2602.00899}, 2026.
+\bibitem{LIGHTGCN} X. He, K. Deng, X. Wang, Y. Li, Y. Zhang, and M. Wang. LightGCN: Simplifying and Powering Graph Convolution Network for Recommendation. \emph{SIGIR}, 2020.
+\bibitem{AMIM} Y. Cheng, Y. Fan, Y. Wang, and X. Li. Accurate Multi-Interest Modeling for Sequential Recommendation with Attention and Distillation Capsule Network. \emph{Expert Systems with Applications}, vol. 243, article 122887, 2024.
+\bibitem{PAAC} M. Cai, L. Chen, Y. Wang, H. Bai, P. Sun, L. Wu, M. Zhang, and M. Wang. Popularity-Aware Alignment and Contrast for Mitigating Popularity Bias. \emph{KDD}, 2024.
+\end{thebibliography}
+
+\end{document}

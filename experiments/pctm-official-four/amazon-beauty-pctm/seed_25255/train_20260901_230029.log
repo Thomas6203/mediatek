@@ -1,0 +1,332 @@
+2026-09-01 23:00:29,121 | INFO | run_id=20260901_230029 dataset=amazon-beauty-pctm device=cuda:0
+2026-09-01 23:00:29,121 | INFO | EXPERIMENT_NOTE matched PCTM/eSASRec protocol; official frozen split; Ours-ID; test once after outer refit
+2026-09-01 23:00:29,121 | INFO | EXPERIMENT_CONFIG {"batch_size": 128, "cache_dir": "/workspace/S114065701/mediatek/cache", "candidates": 64, "checkpoint_every_minutes": 120.0, "coordinator_epochs": 2, "coordinator_lr": 0.0002, "data_path": "/workspace/S114065701/mediatek/sequential-capacity-probes", "dataset": "amazon-beauty-pctm", "device": "cuda:0", "dim": 128, "early_stopping_patience": 12, "enable_lora": 1, "eval_batch_size": 128, "experiment_note": "matched PCTM/eSASRec protocol; official frozen split; Ours-ID; test once after outer refit", "full_catalog_supervised": false, "future_decay": 0.5, "future_horizon": 3, "generate_reasons": false, "graph_device": "cuda:0", "hard_negative_pool_multiplier": 4, "item_prompt_prefix": "Preference-aware product representation: ", "item_vector_artifact": null, "joint_epochs": 20, "joint_lr": 5e-05, "lora_alpha": 16.0, "lora_dropout": 0.05, "lora_rank": 8, "lr_patience": 3, "mamba_encode_batch_size": 4, "mamba_max_tokens": 48, "max_events": null, "max_history": 100, "max_transitions": 0, "min_rating": 4.0, "min_user_events": 5, "monitor_metric": "ndcg@10", "output_dir": "/workspace/S114065701/mediatek/MediaTek_2026_project-0831/ver4/outputs_mamba_rl/amazons_lora", "output_run_dir": "/workspace/S114065701/mediatek/experiments/pctm-official-four/amazon-beauty-pctm/seed_25255", "pctm_item_text_mode": "id", "pctm_metadata_path": null, "pctm_verify_split": true, "periodic_test_user_limit": -1, "popularity_alpha": 0.0, "preference_balance_coef": 0.01, "preference_coef": 0.2, "preference_contrastive_coef": 0.05, "preference_count": 64, "preference_hidden": 128, "preference_score_weight": 0.2, "preference_separation_coef": 0.01, "preference_temperature": 0.2, "preference_transition_coef": 0.1, "reason_count": 20, "reason_max_new_tokens": 40, "refit_outer_train": true, "refresh_data_cache": false, "resume_checkpoint": null, "run_checkpoint_path": null, "run_hours": 46.0, "sasrec_filtering": false, "save_model_weights": true, "score_file": "/workspace/S114065701/mediatek/experiments/pctm-official-four/amazon-beauty-pctm/seed_25255/amazon-beauty-pctm_scores.json", "seed": 25255, "short_window": 10, "skip_mamba": false, "specialist_epochs": 3, "specialist_lr": 0.0002, "target_recall_at_10": 0.15, "transition_beta": 0.0, "use_graph_embeddings": true, "validate_every_steps": 1000, "validation_user_limit": 0}
+2026-09-01 23:00:29,128 | INFO | DATA_FILES_VERIFIED dataset=amazon-beauty-pctm path=/workspace/S114065701/mediatek/sequential-capacity-probes/data/processed/s3_beauty/leave_one_out file_contract_sha256=b92c5b7b85142f1b9d6e4ae7bd344a21f7ffa01a956204e71e8fea9e3455fc69 mode=official-pinned
+2026-09-01 23:00:29,182 | INFO | INTERACTION_CACHE hit path=/workspace/S114065701/mediatek/cache/mamba_multi_agent_data/amazon-beauty-pctm_daeb46787caf.pkl
+2026-09-01 23:00:29,183 | INFO | EVALUATION_CONTRACT_VERIFIED sha256=89e40affaf19e2388ff196ee339a702d4549ddd74580ba7b9857cbc663949f0e users=22311 items=12092
+2026-09-01 23:00:29,183 | INFO | DATA_CONTRACT_BOUND sha256=89e40affaf19e2388ff196ee339a702d4549ddd74580ba7b9857cbc663949f0e artifact=/workspace/S114065701/mediatek/experiments/pctm-official-four/amazon-beauty-pctm/seed_25255/data_contract.json
+2026-09-01 23:00:29,183 | INFO | users=22363 items=12092 train_interactions=153776
+2026-09-01 23:00:29,183 | INFO | CATALOG_PRIORS popularity_alpha=0.000000 transition_beta=0.000000 source=train_histories_only enabled=False
+2026-09-01 23:00:29,214 | INFO | ITEM_VECTOR_ARTIFACT path=/workspace/S114065701/mediatek/cache/mamba_multi_agent/amazon-beauty-pctm_12092_22ff713d32f2_prompt_tok48.pt fingerprint=22ff713d32f2
+2026-09-01 23:00:29,265 | INFO | GRAPH_EMBEDDINGS enabled=True source=train_histories_only main_device=cuda:0 graph_device=cuda:0
+2026-09-01 23:00:29,415 | INFO | ADAPTATION_MODE mode=multi_lora enable_lora=1
+2026-09-01 23:00:29,415 | INFO | ADAPTER_ROUTES {'long': ('candidate_lora', 'delta_lora', 'gate_lora', 'output_lora'), 'short': ('candidate_lora', 'delta_lora', 'gate_lora', 'output_lora'), 'preference': ('transition_lora', 'state_lora'), 'coordinator': ('state_lora', 'mix_lora', 'score_lora')}
+2026-09-01 23:00:29,415 | INFO | agent_parameters={'long': 8321, 'short': 8321, 'preference': 95234, 'coordinator': 7189, 'shared_projection': 327680, 'graph': 4410240}
+2026-09-01 23:00:29,417 | INFO | training_transitions=131413
+2026-09-01 23:00:29,417 | INFO | schedule specialist_epochs=3 coordinator_epochs=2 joint_ranking_epochs=20 validate_every_steps=1000 validation_users=0 periodic_test_users=-1 monitor=ndcg@10 early_stopping_patience=12
+2026-09-01 23:01:47,253 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=specialists | epoch=1 | step=1000 | users=22312/22312
+NDCG  | @5 0.030121 | @10 0.038950
+Recall| @5 0.046746 | @10 0.074175
+Hit   | @5 0.046746 | @10 0.074175
+================================
+2026-09-01 23:01:47,253 | INFO | VALID_STEP step=1000 stage=specialists epoch=1 ndcg@10=0.038950 recall@10=0.074175 improved=True
+2026-09-01 23:01:47,267 | INFO | BEST_CHECKPOINT step=1000 stage=specialists ndcg@10=0.038950 path=/workspace/S114065701/mediatek/experiments/pctm-official-four/amazon-beauty-pctm/seed_25255/best_validation.pt
+2026-09-01 23:01:49,257 | INFO | stage=specialists epoch=1 loss=11.747273 steps=1027 transitions/s=1712.52
+2026-09-01 23:03:05,219 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=specialists | epoch=2 | step=2027 | users=22312/22312
+NDCG  | @5 0.037058 | @10 0.045893
+Recall| @5 0.055934 | @10 0.083677
+Hit   | @5 0.055934 | @10 0.083677
+================================
+2026-09-01 23:03:05,219 | INFO | VALID_STEP step=2027 stage=specialists epoch=2 ndcg@10=0.045893 recall@10=0.083677 improved=True
+2026-09-01 23:03:05,238 | INFO | BEST_CHECKPOINT step=2027 stage=specialists ndcg@10=0.045893 path=/workspace/S114065701/mediatek/experiments/pctm-official-four/amazon-beauty-pctm/seed_25255/best_validation.pt
+2026-09-01 23:03:07,245 | INFO | stage=specialists epoch=2 loss=11.235219 steps=1027 transitions/s=1749.35
+2026-09-01 23:04:20,648 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=specialists | epoch=3 | step=3054 | users=22312/22312
+NDCG  | @5 0.040896 | @10 0.050958
+Recall| @5 0.060371 | @10 0.091700
+Hit   | @5 0.060371 | @10 0.091700
+================================
+2026-09-01 23:04:20,648 | INFO | VALID_STEP step=3054 stage=specialists epoch=3 ndcg@10=0.050958 recall@10=0.091700 improved=True
+2026-09-01 23:04:20,663 | INFO | BEST_CHECKPOINT step=3054 stage=specialists ndcg@10=0.050958 path=/workspace/S114065701/mediatek/experiments/pctm-official-four/amazon-beauty-pctm/seed_25255/best_validation.pt
+2026-09-01 23:04:22,547 | INFO | stage=specialists epoch=3 loss=10.883559 steps=1027 transitions/s=1806.03
+2026-09-01 23:04:57,446 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=coordinator | epoch=1 | step=4081 | users=22312/22312
+NDCG  | @5 0.042113 | @10 0.052101
+Recall| @5 0.063150 | @10 0.094120
+Hit   | @5 0.063150 | @10 0.094120
+================================
+2026-09-01 23:04:57,446 | INFO | VALID_STEP step=4081 stage=coordinator epoch=1 ndcg@10=0.052101 recall@10=0.094120 improved=True
+2026-09-01 23:04:57,511 | INFO | BEST_CHECKPOINT step=4081 stage=coordinator ndcg@10=0.052101 path=/workspace/S114065701/mediatek/experiments/pctm-official-four/amazon-beauty-pctm/seed_25255/best_validation.pt
+2026-09-01 23:04:57,511 | INFO | LEARNING_RATE step=4081 stage=coordinator lr=0.0002
+2026-09-01 23:04:58,416 | INFO | stage=coordinator epoch=1 loss=3.150763 steps=1027 transitions/s=4007.17
+2026-09-01 23:05:32,382 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=coordinator | epoch=2 | step=5108 | users=22312/22312
+NDCG  | @5 0.042919 | @10 0.052997
+Recall| @5 0.064136 | @10 0.095509
+Hit   | @5 0.064136 | @10 0.095509
+================================
+2026-09-01 23:05:32,382 | INFO | VALID_STEP step=5108 stage=coordinator epoch=2 ndcg@10=0.052997 recall@10=0.095509 improved=True
+2026-09-01 23:05:32,397 | INFO | BEST_CHECKPOINT step=5108 stage=coordinator ndcg@10=0.052997 path=/workspace/S114065701/mediatek/experiments/pctm-official-four/amazon-beauty-pctm/seed_25255/best_validation.pt
+2026-09-01 23:05:32,398 | INFO | LEARNING_RATE step=5108 stage=coordinator lr=0.0002
+2026-09-01 23:05:33,156 | INFO | stage=coordinator epoch=2 loss=3.098247 steps=1027 transitions/s=4107.20
+2026-09-01 23:06:49,514 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=joint | epoch=1 | step=6135 | users=22312/22312
+NDCG  | @5 0.046465 | @10 0.057783
+Recall| @5 0.069918 | @10 0.105100
+Hit   | @5 0.069918 | @10 0.105100
+================================
+2026-09-01 23:06:49,514 | INFO | VALID_STEP step=6135 stage=joint epoch=1 ndcg@10=0.057783 recall@10=0.105100 improved=True
+2026-09-01 23:06:49,530 | INFO | BEST_CHECKPOINT step=6135 stage=joint ndcg@10=0.057783 path=/workspace/S114065701/mediatek/experiments/pctm-official-four/amazon-beauty-pctm/seed_25255/best_validation.pt
+2026-09-01 23:06:49,530 | INFO | LEARNING_RATE step=6135 stage=joint lr=5e-05
+2026-09-01 23:06:51,589 | INFO | stage=joint epoch=1 loss=3.628420 steps=1027 transitions/s=1736.00
+2026-09-01 23:08:08,381 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=joint | epoch=2 | step=7162 | users=22312/22312
+NDCG  | @5 0.049417 | @10 0.060174
+Recall| @5 0.073951 | @10 0.107386
+Hit   | @5 0.073951 | @10 0.107386
+================================
+2026-09-01 23:08:08,381 | INFO | VALID_STEP step=7162 stage=joint epoch=2 ndcg@10=0.060174 recall@10=0.107386 improved=True
+2026-09-01 23:08:08,446 | INFO | BEST_CHECKPOINT step=7162 stage=joint ndcg@10=0.060174 path=/workspace/S114065701/mediatek/experiments/pctm-official-four/amazon-beauty-pctm/seed_25255/best_validation.pt
+2026-09-01 23:08:08,446 | INFO | LEARNING_RATE step=7162 stage=joint lr=5e-05
+2026-09-01 23:08:10,413 | INFO | stage=joint epoch=2 loss=3.570190 steps=1027 transitions/s=1729.19
+2026-09-01 23:09:31,241 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=joint | epoch=3 | step=8189 | users=22312/22312
+NDCG  | @5 0.049884 | @10 0.060966
+Recall| @5 0.073727 | @10 0.108238
+Hit   | @5 0.073727 | @10 0.108238
+================================
+2026-09-01 23:09:31,241 | INFO | VALID_STEP step=8189 stage=joint epoch=3 ndcg@10=0.060966 recall@10=0.108238 improved=True
+2026-09-01 23:09:31,270 | INFO | BEST_CHECKPOINT step=8189 stage=joint ndcg@10=0.060966 path=/workspace/S114065701/mediatek/experiments/pctm-official-four/amazon-beauty-pctm/seed_25255/best_validation.pt
+2026-09-01 23:09:31,270 | INFO | LEARNING_RATE step=8189 stage=joint lr=5e-05
+2026-09-01 23:09:33,362 | INFO | stage=joint epoch=3 loss=3.522068 steps=1027 transitions/s=1641.68
+2026-09-01 23:10:53,906 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=joint | epoch=4 | step=9216 | users=22312/22312
+NDCG  | @5 0.049398 | @10 0.060402
+Recall| @5 0.073369 | @10 0.107565
+Hit   | @5 0.073369 | @10 0.107565
+================================
+2026-09-01 23:10:53,906 | INFO | VALID_STEP step=9216 stage=joint epoch=4 ndcg@10=0.060402 recall@10=0.107565 improved=False
+2026-09-01 23:10:53,906 | INFO | LEARNING_RATE step=9216 stage=joint lr=5e-05
+2026-09-01 23:10:55,887 | INFO | stage=joint epoch=4 loss=3.476299 steps=1027 transitions/s=1646.65
+2026-09-01 23:12:14,690 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=joint | epoch=5 | step=10243 | users=22312/22312
+NDCG  | @5 0.050778 | @10 0.061832
+Recall| @5 0.075161 | @10 0.109627
+Hit   | @5 0.075161 | @10 0.109627
+================================
+2026-09-01 23:12:14,690 | INFO | VALID_STEP step=10243 stage=joint epoch=5 ndcg@10=0.061832 recall@10=0.109627 improved=True
+2026-09-01 23:12:14,706 | INFO | BEST_CHECKPOINT step=10243 stage=joint ndcg@10=0.061832 path=/workspace/S114065701/mediatek/experiments/pctm-official-four/amazon-beauty-pctm/seed_25255/best_validation.pt
+2026-09-01 23:12:14,706 | INFO | LEARNING_RATE step=10243 stage=joint lr=5e-05
+2026-09-01 23:12:16,788 | INFO | stage=joint epoch=5 loss=3.431505 steps=1027 transitions/s=1681.64
+2026-09-01 23:13:31,316 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=joint | epoch=6 | step=11270 | users=22312/22312
+NDCG  | @5 0.050350 | @10 0.061994
+Recall| @5 0.073638 | @10 0.109851
+Hit   | @5 0.073638 | @10 0.109851
+================================
+2026-09-01 23:13:31,317 | INFO | VALID_STEP step=11270 stage=joint epoch=6 ndcg@10=0.061994 recall@10=0.109851 improved=True
+2026-09-01 23:13:31,383 | INFO | BEST_CHECKPOINT step=11270 stage=joint ndcg@10=0.061994 path=/workspace/S114065701/mediatek/experiments/pctm-official-four/amazon-beauty-pctm/seed_25255/best_validation.pt
+2026-09-01 23:13:31,383 | INFO | LEARNING_RATE step=11270 stage=joint lr=5e-05
+2026-09-01 23:13:33,191 | INFO | stage=joint epoch=6 loss=3.388485 steps=1027 transitions/s=1781.28
+2026-09-01 23:14:53,124 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=joint | epoch=7 | step=12297 | users=22312/22312
+NDCG  | @5 0.051031 | @10 0.061896
+Recall| @5 0.075654 | @10 0.109358
+Hit   | @5 0.075654 | @10 0.109358
+================================
+2026-09-01 23:14:53,124 | INFO | VALID_STEP step=12297 stage=joint epoch=7 ndcg@10=0.061896 recall@10=0.109358 improved=False
+2026-09-01 23:14:53,124 | INFO | LEARNING_RATE step=12297 stage=joint lr=5e-05
+2026-09-01 23:14:55,407 | INFO | stage=joint epoch=7 loss=3.345256 steps=1027 transitions/s=1653.31
+2026-09-01 23:16:11,522 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=joint | epoch=8 | step=13324 | users=22312/22312
+NDCG  | @5 0.050519 | @10 0.061807
+Recall| @5 0.075251 | @10 0.110299
+Hit   | @5 0.075251 | @10 0.110299
+================================
+2026-09-01 23:16:11,522 | INFO | VALID_STEP step=13324 stage=joint epoch=8 ndcg@10=0.061807 recall@10=0.110299 improved=False
+2026-09-01 23:16:11,523 | INFO | LEARNING_RATE step=13324 stage=joint lr=5e-05
+2026-09-01 23:16:13,388 | INFO | stage=joint epoch=8 loss=3.300775 steps=1027 transitions/s=1742.38
+2026-09-01 23:17:28,181 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=joint | epoch=9 | step=14351 | users=22312/22312
+NDCG  | @5 0.050458 | @10 0.061880
+Recall| @5 0.074982 | @10 0.110479
+Hit   | @5 0.074982 | @10 0.110479
+================================
+2026-09-01 23:17:28,181 | INFO | VALID_STEP step=14351 stage=joint epoch=9 ndcg@10=0.061880 recall@10=0.110479 improved=False
+2026-09-01 23:17:28,181 | INFO | LEARNING_RATE step=14351 stage=joint lr=5e-05
+2026-09-01 23:17:30,392 | INFO | stage=joint epoch=9 loss=3.257972 steps=1027 transitions/s=1772.77
+2026-09-01 23:18:49,654 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=joint | epoch=10 | step=15378 | users=22312/22312
+NDCG  | @5 0.052143 | @10 0.063024
+Recall| @5 0.076999 | @10 0.110837
+Hit   | @5 0.076999 | @10 0.110837
+================================
+2026-09-01 23:18:49,654 | INFO | VALID_STEP step=15378 stage=joint epoch=10 ndcg@10=0.063024 recall@10=0.110837 improved=True
+2026-09-01 23:18:49,670 | INFO | BEST_CHECKPOINT step=15378 stage=joint ndcg@10=0.063024 path=/workspace/S114065701/mediatek/experiments/pctm-official-four/amazon-beauty-pctm/seed_25255/best_validation.pt
+2026-09-01 23:18:49,670 | INFO | LEARNING_RATE step=15378 stage=joint lr=5e-05
+2026-09-01 23:18:51,491 | INFO | stage=joint epoch=10 loss=3.214367 steps=1027 transitions/s=1674.31
+2026-09-01 23:20:07,129 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=joint | epoch=11 | step=16405 | users=22312/22312
+NDCG  | @5 0.051435 | @10 0.062860
+Recall| @5 0.076013 | @10 0.111510
+Hit   | @5 0.076013 | @10 0.111510
+================================
+2026-09-01 23:20:07,129 | INFO | VALID_STEP step=16405 stage=joint epoch=11 ndcg@10=0.062860 recall@10=0.111510 improved=False
+2026-09-01 23:20:07,129 | INFO | LEARNING_RATE step=16405 stage=joint lr=5e-05
+2026-09-01 23:20:09,058 | INFO | stage=joint epoch=11 loss=3.169799 steps=1027 transitions/s=1751.63
+2026-09-01 23:21:28,485 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=joint | epoch=12 | step=17432 | users=22312/22312
+NDCG  | @5 0.050908 | @10 0.062335
+Recall| @5 0.075430 | @10 0.110927
+Hit   | @5 0.075430 | @10 0.110927
+================================
+2026-09-01 23:21:28,485 | INFO | VALID_STEP step=17432 stage=joint epoch=12 ndcg@10=0.062335 recall@10=0.110927 improved=False
+2026-09-01 23:21:28,485 | INFO | LEARNING_RATE step=17432 stage=joint lr=5e-05
+2026-09-01 23:21:30,447 | INFO | stage=joint epoch=12 loss=3.124690 steps=1027 transitions/s=1671.20
+2026-09-01 23:22:49,446 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=joint | epoch=13 | step=18459 | users=22312/22312
+NDCG  | @5 0.051386 | @10 0.062656
+Recall| @5 0.076147 | @10 0.111061
+Hit   | @5 0.076147 | @10 0.111061
+================================
+2026-09-01 23:22:49,446 | INFO | VALID_STEP step=18459 stage=joint epoch=13 ndcg@10=0.062656 recall@10=0.111061 improved=False
+2026-09-01 23:22:49,446 | INFO | LEARNING_RATE step=18459 stage=joint lr=5e-05
+2026-09-01 23:22:51,582 | INFO | stage=joint epoch=13 loss=3.079454 steps=1027 transitions/s=1677.93
+2026-09-01 23:24:12,508 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=joint | epoch=14 | step=19486 | users=22312/22312
+NDCG  | @5 0.052110 | @10 0.063799
+Recall| @5 0.076596 | @10 0.112809
+Hit   | @5 0.076596 | @10 0.112809
+================================
+2026-09-01 23:24:12,509 | INFO | VALID_STEP step=19486 stage=joint epoch=14 ndcg@10=0.063799 recall@10=0.112809 improved=True
+2026-09-01 23:24:12,573 | INFO | BEST_CHECKPOINT step=19486 stage=joint ndcg@10=0.063799 path=/workspace/S114065701/mediatek/experiments/pctm-official-four/amazon-beauty-pctm/seed_25255/best_validation.pt
+2026-09-01 23:24:12,573 | INFO | LEARNING_RATE step=19486 stage=joint lr=5e-05
+2026-09-01 23:24:14,346 | INFO | stage=joint epoch=14 loss=3.034283 steps=1027 transitions/s=1640.38
+2026-09-01 23:25:33,307 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=joint | epoch=15 | step=20513 | users=22312/22312
+NDCG  | @5 0.051756 | @10 0.063167
+Recall| @5 0.076327 | @10 0.111689
+Hit   | @5 0.076327 | @10 0.111689
+================================
+2026-09-01 23:25:33,307 | INFO | VALID_STEP step=20513 stage=joint epoch=15 ndcg@10=0.063167 recall@10=0.111689 improved=False
+2026-09-01 23:25:33,307 | INFO | LEARNING_RATE step=20513 stage=joint lr=5e-05
+2026-09-01 23:25:35,356 | INFO | stage=joint epoch=15 loss=2.987853 steps=1027 transitions/s=1679.86
+2026-09-01 23:26:55,294 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=joint | epoch=16 | step=21540 | users=22312/22312
+NDCG  | @5 0.052229 | @10 0.063379
+Recall| @5 0.076909 | @10 0.111599
+Hit   | @5 0.076909 | @10 0.111599
+================================
+2026-09-01 23:26:55,294 | INFO | VALID_STEP step=21540 stage=joint epoch=16 ndcg@10=0.063379 recall@10=0.111599 improved=False
+2026-09-01 23:26:55,294 | INFO | LEARNING_RATE step=21540 stage=joint lr=5e-05
+2026-09-01 23:26:57,109 | INFO | stage=joint epoch=16 loss=2.941877 steps=1027 transitions/s=1666.49
+2026-09-01 23:28:17,359 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=joint | epoch=17 | step=22567 | users=22312/22312
+NDCG  | @5 0.051771 | @10 0.062995
+Recall| @5 0.076327 | @10 0.111151
+Hit   | @5 0.076327 | @10 0.111151
+================================
+2026-09-01 23:28:17,359 | INFO | VALID_STEP step=22567 stage=joint epoch=17 ndcg@10=0.062995 recall@10=0.111151 improved=False
+2026-09-01 23:28:17,359 | INFO | LEARNING_RATE step=22567 stage=joint lr=5e-05
+2026-09-01 23:28:19,493 | INFO | stage=joint epoch=17 loss=2.895122 steps=1027 transitions/s=1650.37
+2026-09-01 23:48:18,650 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=joint | epoch=18 | step=23594 | users=22312/22312
+NDCG  | @5 0.051633 | @10 0.063070
+Recall| @5 0.076103 | @10 0.111689
+Hit   | @5 0.076103 | @10 0.111689
+================================
+2026-09-01 23:48:18,650 | INFO | VALID_STEP step=23594 stage=joint epoch=18 ndcg@10=0.063070 recall@10=0.111689 improved=False
+2026-09-01 23:48:18,650 | INFO | LEARNING_RATE step=23594 stage=joint lr=2.5e-05
+2026-09-01 23:48:20,767 | INFO | stage=joint epoch=18 loss=2.848925 steps=1027 transitions/s=109.65
+2026-09-01 23:49:38,784 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=joint | epoch=19 | step=24621 | users=22312/22312
+NDCG  | @5 0.052820 | @10 0.063941
+Recall| @5 0.077357 | @10 0.111958
+Hit   | @5 0.077357 | @10 0.111958
+================================
+2026-09-01 23:49:38,784 | INFO | VALID_STEP step=24621 stage=joint epoch=19 ndcg@10=0.063941 recall@10=0.111958 improved=True
+2026-09-01 23:49:38,843 | INFO | BEST_CHECKPOINT step=24621 stage=joint ndcg@10=0.063941 path=/workspace/S114065701/mediatek/experiments/pctm-official-four/amazon-beauty-pctm/seed_25255/best_validation.pt
+2026-09-01 23:49:38,843 | INFO | LEARNING_RATE step=24621 stage=joint lr=2.5e-05
+2026-09-01 23:49:40,904 | INFO | stage=joint epoch=19 loss=2.783423 steps=1027 transitions/s=1699.30
+2026-09-01 23:51:02,496 | INFO | 
+========== PERIODIC VALIDATION ==========
+stage=joint | epoch=20 | step=25648 | users=22312/22312
+NDCG  | @5 0.052504 | @10 0.063776
+Recall| @5 0.077402 | @10 0.112316
+Hit   | @5 0.077402 | @10 0.112316
+================================
+2026-09-01 23:51:02,496 | INFO | VALID_STEP step=25648 stage=joint epoch=20 ndcg@10=0.063776 recall@10=0.112316 improved=False
+2026-09-01 23:51:02,496 | INFO | LEARNING_RATE step=25648 stage=joint lr=2.5e-05
+2026-09-01 23:51:04,661 | INFO | stage=joint epoch=20 loss=2.757191 steps=1027 transitions/s=1621.46
+2026-09-01 23:51:07,023 | INFO | 
+========== FINAL CURRENT VALIDATION ==========
+stage=final | epoch=0 | step=25675 | users=22312/22312
+NDCG  | @5 0.052801 | @10 0.063788
+Recall| @5 0.077716 | @10 0.111734
+Hit   | @5 0.077716 | @10 0.111734
+================================
+2026-09-01 23:51:07,023 | INFO | VALID_STEP step=25675 stage=final epoch=0 ndcg@10=0.063788 recall@10=0.111734 improved=False
+2026-09-01 23:51:07,025 | INFO | RESTORE_BEST step=24621 stage=joint ndcg@10=0.063941
+2026-09-01 23:51:09,344 | INFO | OUTER_REFIT_START selected_from_inner_step=24621 stage_steps={'specialists': 3081, 'coordinator': 2054, 'joint': 19486}
+2026-09-01 23:51:09,394 | INFO | GRAPH_EMBEDDINGS enabled=True source=train_histories_only main_device=cuda:0 graph_device=cuda:0
+2026-09-01 23:51:09,424 | INFO | ADAPTATION_MODE mode=multi_lora enable_lora=1
+2026-09-01 23:51:09,424 | INFO | ADAPTER_ROUTES {'long': ('candidate_lora', 'delta_lora', 'gate_lora', 'output_lora'), 'short': ('candidate_lora', 'delta_lora', 'gate_lora', 'output_lora'), 'preference': ('transition_lora', 'state_lora'), 'coordinator': ('state_lora', 'mix_lora', 'score_lora')}
+2026-09-01 23:51:09,424 | INFO | agent_parameters={'long': 8321, 'short': 8321, 'preference': 95234, 'coordinator': 7189, 'shared_projection': 327680, 'graph': 4410240}
+2026-09-01 23:52:41,380 | INFO | stage=specialists epoch=1 loss=11.754799 steps=1202 transitions/s=1677.66
+2026-09-01 23:54:13,057 | INFO | stage=specialists epoch=2 loss=11.232855 steps=1202 transitions/s=1682.26
+2026-09-01 23:55:04,052 | INFO | stage=specialists epoch=3 loss=10.891894 steps=677 transitions/s=1708.43
+2026-09-01 23:55:39,852 | INFO | stage=coordinator epoch=1 loss=3.218897 steps=1202 transitions/s=4322.31
+2026-09-01 23:56:05,188 | INFO | stage=coordinator epoch=2 loss=3.172778 steps=852 transitions/s=4372.01
+2026-09-01 23:57:38,252 | INFO | stage=joint epoch=1 loss=3.680569 steps=1202 transitions/s=1656.85
+2026-09-01 23:59:09,870 | INFO | stage=joint epoch=2 loss=3.617000 steps=1202 transitions/s=1683.44
+2026-09-02 00:00:39,860 | INFO | stage=joint epoch=3 loss=3.564249 steps=1202 transitions/s=1714.06
+2026-09-02 00:02:13,073 | INFO | stage=joint epoch=4 loss=3.514261 steps=1202 transitions/s=1654.51
+2026-09-02 00:03:39,295 | INFO | stage=joint epoch=5 loss=3.466030 steps=1202 transitions/s=1789.23
+2026-09-02 00:05:08,649 | INFO | stage=joint epoch=6 loss=3.418301 steps=1202 transitions/s=1726.42
+2026-09-02 00:06:34,030 | INFO | stage=joint epoch=7 loss=3.370486 steps=1202 transitions/s=1806.90
+2026-09-02 00:08:06,726 | INFO | stage=joint epoch=8 loss=3.322033 steps=1202 transitions/s=1663.71
+2026-09-02 00:09:38,493 | INFO | stage=joint epoch=9 loss=3.273901 steps=1202 transitions/s=1683.31
+2026-09-02 00:11:10,198 | INFO | stage=joint epoch=10 loss=3.225155 steps=1202 transitions/s=1682.02
+2026-09-02 00:12:36,699 | INFO | stage=joint epoch=11 loss=3.174149 steps=1202 transitions/s=1785.73
+2026-09-02 00:14:08,136 | INFO | stage=joint epoch=12 loss=3.124472 steps=1202 transitions/s=1686.56
+2026-09-02 00:15:40,345 | INFO | stage=joint epoch=13 loss=3.074216 steps=1202 transitions/s=1673.00
+2026-09-02 00:17:11,293 | INFO | stage=joint epoch=14 loss=3.022673 steps=1202 transitions/s=1695.90
+2026-09-02 00:18:39,744 | INFO | stage=joint epoch=15 loss=2.970804 steps=1202 transitions/s=1744.08
+2026-09-02 00:20:05,486 | INFO | stage=joint epoch=16 loss=2.919312 steps=1202 transitions/s=1801.58
+2026-09-02 00:20:25,170 | INFO | stage=joint epoch=17 loss=2.845883 steps=254 transitions/s=1675.37
+2026-09-02 00:20:25,199 | INFO | OUTER_REFIT_COMPLETE {'enabled': True, 'selection_source': 'inner_leave_one_out_validation', 'selected_inner_step': 24621, 'selected_stage_steps': {'specialists': 3081, 'coordinator': 2054, 'joint': 19486}, 'completed_stage_steps': {'specialists': 3081, 'coordinator': 2054, 'joint': 19486}, 'training_interactions': 176139}
+2026-09-02 00:20:27,874 | INFO | 
+========== BEST CHECKPOINT VALIDATION ==========
+stage=joint | epoch=0 | step=24621 | users=22312/22312
+NDCG  | @5 0.052801 | @10 0.063921
+Recall| @5 0.077357 | @10 0.111958
+Hit   | @5 0.077357 | @10 0.111958
+================================
+2026-09-02 00:20:27,874 | INFO | 
+========== FINAL FULL TEST ==========
+stage=joint | epoch=0 | step=24621 | users=22311/22311
+NDCG  | @5 0.044518 | @10 0.055598
+Recall| @5 0.066290 | @10 0.100713
+Hit   | @5 0.066290 | @10 0.100713
+================================
+2026-09-02 00:20:27,874 | INFO | VALID_BEST {"evaluated_users": 22312, "hit@10": 0.11195769092864825, "hit@5": 0.07735747579777698, "ndcg@10": 0.06392091570916933, "ndcg@5": 0.05280075122877106, "preference_change_probability": 0.051253874441251485, "preference_current_entropy": 3.995748599227845, "preference_next_entropy": 4.111876703496901, "preference_ranking_weight": 0.476806640625, "recall@10": 0.11195769092864825, "recall@5": 0.07735747579777698, "scores_per_second": 116457403.64826348, "total_users": 22312, "users_per_second": 9630.946381761783}
+2026-09-02 00:20:27,874 | INFO | TEST_FINAL {"evaluated_users": 22311, "hit@10": 0.10071265295145893, "hit@5": 0.06629017076778271, "ndcg@10": 0.05559761101376401, "ndcg@5": 0.04451786966183009, "preference_change_probability": 0.054227913699249036, "preference_current_entropy": 3.982419371877416, "preference_next_entropy": 4.100775731640573, "preference_ranking_weight": 0.47998046875, "recall@10": 0.10071265295145893, "recall@5": 0.06629017076778271, "scores_per_second": 100981044.77056344, "total_users": 22311, "users_per_second": 8351.062253602666}
+2026-09-02 00:20:27,874 | INFO | TARGET_RESULT metric=recall@10 target=>0.150000 actual=0.100713 achieved=False
+2026-09-02 00:20:28,240 | INFO | scores=/workspace/S114065701/mediatek/experiments/pctm-official-four/amazon-beauty-pctm/seed_25255/amazon-beauty-pctm_scores.json
+2026-09-02 00:20:28,241 | INFO | outputs=/workspace/S114065701/mediatek/experiments/pctm-official-four/amazon-beauty-pctm/seed_25255

@@ -1,0 +1,30 @@
+{
+  "dataset": "movielens-1m-pctm",
+  "directory": "ml_1m",
+  "evaluation": {
+    "catalogue_items": 3704,
+    "catalogue_sha256": "d50ce9e54356361c49e5c654b94082b6380ab627904a8dac9b80de824f2b10da",
+    "eligible_test_users": 6038,
+    "histories_sha256": "34a1cead966c5a8acf15618c9d8dc252c0b340a65be893b672e3a3a9cc81f842",
+    "protocol": {
+      "filter_seen": true,
+      "full_catalogue": true,
+      "k": 10
+    },
+    "targets_sha256": "5d4212e39887c1a3d03a85e6479b783e18b15280768aa92a2bb8ea47f8afdf15"
+  },
+  "evaluation_contract_sha256": "0cb2bb1191a54cbca2a15aa9a29da4db3605de25de125331ef47fa8160bd6532",
+  "file_contract_sha256": "0a20e72951c70551a980d4fb986ad7068e79b21de7d8aca276b62291e19ea965",
+  "files": {
+    "holdout.csv": {
+      "rows": 6038,
+      "sha256": "83bf1681a6dc94a5e567fcca9bd5de44618ff4097f9a2172df840bdbcb15f478"
+    },
+    "train.csv": {
+      "rows": 994169,
+      "sha256": "74afd9fcafba3e694195fe26c8ea486ec12dd16f22f0aaaa88cbcd66c960176a"
+    }
+  },
+  "schema_version": 1,
+  "verification": "official-pinned"
+}

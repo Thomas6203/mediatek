@@ -1,0 +1,20 @@
+# NVIDIA RTX PRO 6000 Blackwell: use the CUDA 12.8 PyTorch wheel.
+# The extra index keeps normal packages on PyPI while retrieving this GPU wheel.
+--extra-index-url https://download.pytorch.org/whl/cu128
+torch==2.7.1+cu128
+# Keep optional PyTorch companion packages ABI-compatible with the CUDA 12.8 wheel.
+torchvision==0.22.1+cu128
+torchaudio==2.7.1+cu128
+# Amazon-Reviews-2023 still uses a Hugging Face dataset loading script.
+# datasets 4.x removed support for such scripts; 3.6.0 is the validated version.
+transformers==4.56.1
+datasets==3.6.0
+accelerate==1.10.1
+bitsandbytes>=0.43; platform_system != "Windows"
+numpy>=1.26
+tqdm>=4.66
+matplotlib>=3.8
+# Required by Transformers when loading/converting the Mamba tokenizer.
+protobuf>=3.20.3,<6
+# LoRA adapters used only by the independent REINFORCE/Mamba RL trainer.
+peft==0.17.1

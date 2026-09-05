@@ -1,0 +1,9 @@
+Python 3.10.12
+torch 2.7.1+cu128
+datasets 3.6.0
+numpy 2.2.6
+mamba-ssm 2.2.6.post3
+causal-conv1d 1.5.3.post1
+
+# Hardware used for the recorded runs:
+# NVIDIA RTX PRO 6000 Blackwell Workstation Edition

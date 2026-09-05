@@ -1,0 +1,30 @@
+{
+  "dataset": "amazon-toys-pctm",
+  "directory": "s3_toys",
+  "evaluation": {
+    "catalogue_items": 11917,
+    "catalogue_sha256": "3bae65325ecde29df2dbb1b2452ee3cafde13966691eecefae8b5142233268a3",
+    "eligible_test_users": 19365,
+    "histories_sha256": "00a8e5cc161f114b36cd42d5340e631392a353f1d2d39510ce7218e9b157d1f8",
+    "protocol": {
+      "filter_seen": true,
+      "full_catalogue": true,
+      "k": 10
+    },
+    "targets_sha256": "582d010fca92043dd99fd102d961bc16e817071f809d0b0c0e79c31db41e1484"
+  },
+  "evaluation_contract_sha256": "937507d331a32244bed8920c75efb3e9d89ebf02762adaa23537a7e9ec3466df",
+  "file_contract_sha256": "c0ad2661eb48804336df40c69ac0e73ddc899032691cbbf754efb618d919b0e3",
+  "files": {
+    "holdout.csv": {
+      "rows": 19365,
+      "sha256": "ff18781f3e2784b1d4438bdd5a54be7fb75aa0f2d7d08f552271f135bf1ee7b8"
+    },
+    "train.csv": {
+      "rows": 148185,
+      "sha256": "ca9191ea48da1bc4b9ed812354ae3b58a7b93f2417d4794142c9c9dc0230b356"
+    }
+  },
+  "schema_version": 1,
+  "verification": "official-pinned"
+}

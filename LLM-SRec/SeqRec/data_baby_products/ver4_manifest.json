@@ -1,0 +1,36 @@
+{
+  "dataset_key": "baby_products",
+  "amazon_2023_config": "raw_review_Baby_Products",
+  "metadata_config": "raw_meta_Baby_Products",
+  "filter": "one-pass raw user>=5 and raw item>=5",
+  "split": "stable chronological leave-two-out; post-filter length<3 is training-only",
+  "statistics": {
+    "num_users": 184834,
+    "evaluation_users": 184584,
+    "num_items": 77324,
+    "train_interactions": 1121805
+  },
+  "split_sha256": "64e1d90529a440fe0f3754577c94ea6f1676dae52ebfbb9e10c9adf236df6ca0",
+  "source_split_sha256": "64e1d90529a440fe0f3754577c94ea6f1676dae52ebfbb9e10c9adf236df6ca0",
+  "protocol": {
+    "seed": 25252,
+    "epochs": 18,
+    "batch_size": 128,
+    "evaluation_batch_size": 64,
+    "max_history": 50,
+    "early_stopping_patience": 6,
+    "selection_metric": "validation ndcg@10",
+    "evaluation": "all eligible users, full catalog, seen-item masking",
+    "max_transitions": 1500000
+  },
+  "source_commit": "b81019ca655fb759cee895924b8b6c7cc0f0cce9",
+  "split_file_sha256": {
+    "train": "fa97b26b04c827736a435b5bf581ebfc0724c0af54ae84eeb0b0da56d91260be",
+    "valid": "6dd67f6563dd154370768df49df42d137930f0993e16c84bcea3ec7b81b8cfab",
+    "test": "e9e0683a9c6d937147af68e730f6c0d5afcea2c78dd242dc63b13483d4cf7ff7"
+  },
+  "text_metadata_sha256": "34af14a7eaf3c457fb5e0c037e5f8c7ba253ae9c0c476ddbd6f20fd02add38e2",
+  "metadata_items_matched": 77324,
+  "timestamp_interactions_verified": 1490973,
+  "placeholders_only": false
+}

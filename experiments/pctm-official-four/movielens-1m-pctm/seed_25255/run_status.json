@@ -1,0 +1,7 @@
+{
+  "elapsed_seconds_total": 9907.80255336687,
+  "evaluation_contract_sha256": "0cb2bb1191a54cbca2a15aa9a29da4db3605de25de125331ef47fa8160bd6532",
+  "final_model": "/workspace/S114065701/mediatek/experiments/pctm-official-four/movielens-1m-pctm/seed_25255/multi_agent_lora.pt",
+  "metrics": "/workspace/S114065701/mediatek/experiments/pctm-official-four/movielens-1m-pctm/seed_25255/metrics.json",
+  "status": "completed"
+}

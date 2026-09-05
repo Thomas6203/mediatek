@@ -1,0 +1,36 @@
+{
+  "dataset_key": "sports_and_outdoors",
+  "amazon_2023_config": "raw_review_Sports_and_Outdoors",
+  "metadata_config": "raw_meta_Sports_and_Outdoors",
+  "filter": "one-pass raw user>=5 and raw item>=5",
+  "split": "stable chronological leave-two-out; post-filter length<3 is training-only",
+  "statistics": {
+    "num_users": 631803,
+    "evaluation_users": 625563,
+    "num_items": 401572,
+    "train_interactions": 3678023
+  },
+  "split_sha256": "0871495b5f1c9ed60f2a3485b38a0bbce98d7371027a4eff05ac40dbf9eb4cc9",
+  "source_split_sha256": "0871495b5f1c9ed60f2a3485b38a0bbce98d7371027a4eff05ac40dbf9eb4cc9",
+  "protocol": {
+    "seed": 25252,
+    "epochs": 18,
+    "batch_size": 128,
+    "evaluation_batch_size": 64,
+    "max_history": 50,
+    "early_stopping_patience": 6,
+    "selection_metric": "validation ndcg@10",
+    "evaluation": "all eligible users, full catalog, seen-item masking",
+    "max_transitions": 1000000
+  },
+  "source_commit": "b81019ca655fb759cee895924b8b6c7cc0f0cce9",
+  "split_file_sha256": {
+    "train": "7f7c3f38020f5f762147a093b69d303f4734356d90b0c2038e741d31751b9738",
+    "valid": "6bacd13bfa4209ee96acdffc10083b6c50c89a3e2ebcd341ca7f7be5036c30f2",
+    "test": "8c5099a267fbd687a99788c5dad38a39e6dea157f6a42bd08f20aff9620bb665"
+  },
+  "text_metadata_sha256": "9ddc0424aab03fd5f03dd3a1e58b26c25d19d07764140ad83d54f8894d0c5023",
+  "metadata_items_matched": 401572,
+  "timestamp_interactions_verified": 4929149,
+  "placeholders_only": false
+}

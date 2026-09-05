@@ -1,0 +1,7 @@
+{
+  "elapsed_seconds_total": 4799.12261446286,
+  "evaluation_contract_sha256": "89e40affaf19e2388ff196ee339a702d4549ddd74580ba7b9857cbc663949f0e",
+  "final_model": "/workspace/S114065701/mediatek/experiments/pctm-official-four/amazon-beauty-pctm/seed_25255/multi_agent_lora.pt",
+  "metrics": "/workspace/S114065701/mediatek/experiments/pctm-official-four/amazon-beauty-pctm/seed_25255/metrics.json",
+  "status": "completed"
+}
